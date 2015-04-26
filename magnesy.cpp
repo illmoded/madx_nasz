@@ -38,7 +38,7 @@ public:
 	double px;
 	double py;
 	double pz;
-	double pt;
+	// double pt;
 	double energia;
 };
 
@@ -54,6 +54,8 @@ std::vector<proton>wczytajprotony(std::ifstream &plik)
 	}
 	listap[i].x=a;
 	listap[i].y=b;
+	listap[i].px=c;
+	listap[i].py=d;
 	//...i tak dalej
 }
 
@@ -122,6 +124,41 @@ int main(int argc, char const *argv[])
 	for (int i = 0; i < listamagnesow.size(); i++)
 	{
 		cout << listamagnesow[i].polozenie << endl;
+	}
+
+	ifstream plik("czastki",std::ios::in); //trzeba je jeszcze gdzieś tworzyć
+
+
+
+
+
+	std::vector<proton> protony;
+	protony=wczytajprotony(plik);
+
+
+
+
+	///ruch, później może do innej funkcji
+	///eulerem, po co sie meczyc z czyms innym
+	for (int i = 0; i < protony.size(); i++)
+	{
+		double t;
+		double dt=0.01;
+		while(protony[i].z<204) //gdzie są osie? no i trzeba by dodać jakoś zapisywanie trajektorii, chyba że sam bufor openGL wystarczy
+		{
+			x+=px*t;
+			y+=py*t;
+			z+=pz*t;
+			t+=dt;
+			for (int j = 0; j < listamagnesow.size(); j++)
+			{
+				while(protony[i].z>listamagnesow[j].polozenie && protony[i].z<listamagnesow[j].polozenie+listamagnesow[j].dlugosc)
+				{
+					//x+=pole dipola /kwadrupola tylko że są voidami i nie wiem jak wyglądają i czy to nie ma być jakoś relatywistycznie
+					//y+=tak samo
+				}
+			}
+		}		
 	}
 
 	return 0;
