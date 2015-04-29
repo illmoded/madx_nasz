@@ -14,7 +14,7 @@ class magnes
 public:
 	double polozenie;
 	double dlugosc;
-	double indukcja;	
+	double indukcja; /// wsp k
 };
 
 class dipol:public magnes
@@ -23,7 +23,7 @@ public:
 	void poledipola(double x);	
 };
 
-class kwadrupaol:public magnes
+class kwadrupol:public magnes
 {
 public:
 	void polekwadrupola(double x, double y);	
@@ -65,7 +65,7 @@ std::vector<magnes>wczytajmagnesy(std::ifstream &plik)
 	std::vector<magnes> lista;	
 	double a,b,c,d;
 	dipol dip;
-	kwadrupaol kwa;
+	kwadrupol kwa;
 
 	int i=0;
 	int j=1;
@@ -146,9 +146,9 @@ int main(int argc, char const *argv[])
 		double dt=0.01;
 		while(protony[i].z<204) //gdzie są osie? no i trzeba by dodać jakoś zapisywanie trajektorii, chyba że sam bufor openGL wystarczy
 		{
-			x+=px*t;
-			y+=py*t;
-			z+=pz*t;
+			// x+=px*t;
+			// y+=py*t;
+			// z+=pz*t;
 			t+=dt;
 			for (int j = 0; j < listamagnesow.size(); j++)
 			{
