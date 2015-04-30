@@ -1,0 +1,18 @@
+ID			Kto			Opis			Historia																																																												Szacowany czas 	Realny Czas			Priorytet	Stan
+
+1			user		Założenia		Program oblicza trajektorie cząstek (protonów) do 204 m tunelu.					
+2			sys/user	Init			Wartości początkowe są odczytywane z pliku generowanego przez zewnętrzny program (Pythia) lub generowane (niefizycznie, ma służyć do szybkiej prezentacji programu).	Do wyboru powinno być kilka rozkładów statystycznych używanych w hep.			1h				1h								generowania brak
+2a			user		Init			Program pozwala na edytowanie warunków początkowych układu, tj. położenia i mocy magnesów leżących wzdłuż toru lotu protonów.	Powinno się to odbywać przez podanie odpowiedniego pliku wsadowego, lub przez wbudowany edytor.											1h			
+3			sys							Obliczenia	Trajektorie cząstek są wyliczane, używając maksymalnej dostępnej mocy obliczeniowej (mpi).	Duża ilość danych wsadowych nie powinna zbytnio wpływać na szybkość startu programu.															2h				3h					W			prawie,  jeszcze niech funkcje się pojawią
+3b										Dodanie funkcji opisujących relatywistyczne równanie lorentza I funkcje magnesów.																																										2h				2h					W			równania są, ale nie wiem czy dobrze
+3a			sys/user	Kontynuacja		Mozliwość przerwania czasochłonnych obliczeń/zapis stanu i póżniejsza Kontynuacja																																										1h			
+4			sys			GUI				Program posiada interfejs graficzny (Qt lub wxWidgets) oraz tekstowy.																																													20h									W			50% - graficzna część interfejsu wykonana
+4a			user		GUI				Wybór rodzaju danych wejściowych																																																						2h												20% - rozpoczęte prace na wczytywaniem i zapisem danych
+4b			user		GUI				Przełącznik trybu																																																										2h												nie rozpoczety
+4c			user		GUI				Zmiana parametrów magnesów oraz dodawanie i odejmowanie ich																																																20h												nie rozpoczety
+5			sys			Wiz				Program wyświetla wizualizację trajektorii cząstek (OpenGL).																																															5h			
+5a			sys			Wiz				Program wyświetla tunel, w którym rozpędzane są cząstki.																																																3h			
+5b			sys			Wiz				Wyświetla też magnesy rozłożone wzdłuż tunelu.																																																			3h			
+5c			sys			Wiz				Wyświetla trajektorię (w postaci linii) lub ewolucję układu w czasie.																																													5h			
+7			sys			Interpreter		Program wyświetla wykresy, które pomagają w interpretacji uzyskanych wyników symulacji fizycznej - wykres akceptancji, wykres alignment, itd. (z wykorzystaniem bibliotek ROOT, lub innych)																6h			
+8			user		Zapis			User może zapisać uzyskany wynik w formie pliku tekstowego lub eps/png																																													2h			
