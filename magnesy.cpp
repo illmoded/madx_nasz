@@ -45,13 +45,13 @@ std::vector<proton>wczytajprotony(std::ifstream &plik)
 {
 	std::vector<proton> listap;
 	double a,b,c,d,e,f,g;
-	proton prot;
+	proton proton_;
 
 	int i=0;
 
 	while(plik >> a >> b >> c >> d >> e >> f >> g)
 	{
-		listap.push_back(prot);
+		listap.push_back(proton_);
 		listap[i].x=a;
 		listap[i].y=b;
 		listap[i].z=c;
@@ -139,7 +139,7 @@ int main(int argc, char const *argv[])
 	// 	cout << listamagnesow[i].polozenie << endl;
 	// }
 
-	ifstream plik("czastki",ios::in); //trzeba je jeszcze gdzieś tworzyć
+	ifstream plik("input",ios::in); //trzeba je jeszcze gdzieś tworzyć
 
 
 
@@ -149,30 +149,37 @@ int main(int argc, char const *argv[])
 
 	// cout << protony.size() << endl;
 
-
+	ofstream zapis("output",ios::out);
 
 	///ruch, później może do innej funkcji
 	///eulerem, po co sie meczyc z czyms innym
 	for (int i = 0; i < protony.size(); i++)
 	{
-		double t;
-		double dt=0.01;
+		double dt=0.001;
 		while(protony[i].z<L) //gdzie są osie? no i trzeba by dodać jakoś zapisywanie trajektorii, chyba że sam bufor openGL wystarczy
 		{
-			// x+=px*t;
-			// y+=py*t;
-			// z+=pz*t;
-			t+=dt;
+			protony[i].x+=protony[i].px*dt;
+			protony[i].y+=protony[i].py*dt;
+			protony[i].z+=protony[i].pz*dt;
+			// cout << protony[i].z << endl;
+
 			for (int j = 0; j < listamagnesow.size(); j++)
 			{
 				while(protony[i].z>listamagnesow[j].polozenie && protony[i].z<listamagnesow[j].polozenie+listamagnesow[j].dlugosc)
 				{
-					//x+=pole dipola /kwadrupola tylko że są voidami i nie wiem jak wyglądają i czy to nie ma być jakoś relatywistycznie
-					//y+=tak samo
+					double E=protony[i].energia;
+					double Bx=listamagnesow[j].indukcja;
+					double By=listamagnesow[j].indukcja;
+					protony[i].x+=dt*dt/E/E*protony[i].pz*By+dt/E*protony[i].px;
+					protony[i].y+=dt*dt/E/E*protony[i].pz*Bx+dt/E*protony[i].py;
+					protony[i].z+=dt*dt/E/E*(protony[i].px*By-protony[i].py*Bx)+dt/E*protony[i].pz;
 				}
 			}
-		}		
+		}
+		zapis << i+1 << "\t" << protony[i].x << "\t" << protony[i].px << "\t" << protony[i].y << "\t" << protony[i].py
+		 << "\t" << protony[i].pz << "\t" << protony[i].energia << endl;
 	}
 
+	zapis.close();
 	return 0;
 }
