@@ -1,4 +1,4 @@
-//czas P+K ~1h P20m+10m K25min
+//czas P+K ~1h P20m+10m K2h
 
 #include <vector>
 #include <stdio.h>
@@ -44,7 +44,7 @@ public:
 std::vector<proton>wczytajprotony(std::ifstream &plik)
 {
 	std::vector<proton> listap;
-	double a,b,c,d,e,f,g;
+	double id,a,b,c,d,e,f,g;
 	proton proton_;
 
 	int i=0;
@@ -179,6 +179,7 @@ int main(int argc, char const *argv[])
 				}
 			}
 		}
+		cout << i+1 << endl;
 		zapis << i+1 << "\t" << protony[i].x << "\t" << protony[i].px << "\t" << protony[i].y << "\t" << protony[i].py
 		 << "\t" << protony[i].pz << "\t" << protony[i].energia << endl;
 	}
