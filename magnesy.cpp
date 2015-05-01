@@ -170,9 +170,12 @@ int main(int argc, char const *argv[])
 					double E=protony[i].energia;
 					double Bx=listamagnesow[j].indukcja;
 					double By=listamagnesow[j].indukcja;
-					protony[i].x+=dt*dt/E/E*protony[i].pz*By+dt/E*protony[i].px;
-					protony[i].y+=dt*dt/E/E*protony[i].pz*Bx+dt/E*protony[i].py;
-					protony[i].z+=dt*dt/E/E*(protony[i].px*By-protony[i].py*Bx)+dt/E*protony[i].pz;
+					protony[i].px+=dt/E/E*protony[i].pz*By;
+					protony[i].py+=dt/E/E*protony[i].pz*Bx;
+					protony[i].pz+=dt/E/E*(protony[i].px*By-protony[i].py*Bx);
+					protony[i].x+=dt/E*protony[i].px;
+					protony[i].y+=dt/E*protony[i].py;
+					protony[i].z+=dt/E*protony[i].pz;
 				}
 			}
 		}
