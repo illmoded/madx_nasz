@@ -1,4 +1,4 @@
-//czas P+K ~1h P20m+10m
+//czas P+K ~1h P20m+10m K25min
 
 #include <vector>
 #include <stdio.h>
@@ -38,25 +38,31 @@ public:
 	double px;
 	double py;
 	double pz;
-	// double pt;
 	double energia;
 };
 
 std::vector<proton>wczytajprotony(std::ifstream &plik)
 {
 	std::vector<proton> listap;
-	double a,b,c,d;
-	proton proton_;
+	double a,b,c,d,e,f,g;
+	proton prot;
+
 	int i=0;
-	while(plik >> a >> b >> c >> d)
+
+	while(plik >> a >> b >> c >> d >> e >> f >> g)
 	{
-		listap.push_back(proton_);
+		listap.push_back(prot);
+		listap[i].x=a;
+		listap[i].y=b;
+		listap[i].z=c;
+		listap[i].px=d;
+		listap[i].py=e;
+		listap[i].pz=f;
+		listap[i].energia=g;
+
+		i++;
 	}
-	listap[i].x=a;
-	listap[i].y=b;
-	listap[i].px=c;
-	listap[i].py=d;
-	//...i tak dalej
+	return listap;
 }
 
 std::vector<magnes>wczytajmagnesy(std::ifstream &plik)
@@ -110,31 +116,38 @@ std::vector<magnes>vappend(std::vector<magnes> a, std::vector<magnes> b)
 
 int main(int argc, char const *argv[])
 {
+	double L=204.0;
 	std::vector<magnes> listamagnesow;	
 
-	for (int i = 0; i < argc; i++)
-	{
-		ifstream plik(argv[i],ios::in);
+	if(argc==1){
+		ifstream plik("def_magn",ios::in);
 		listamagnesow=vappend(listamagnesow,wczytajmagnesy(plik));
 		plik.close();
-
-	}	
-	// cout << listamagnesow.size()  << endl;	
-
-	for (int i = 0; i < listamagnesow.size(); i++)
-	{
-		cout << listamagnesow[i].polozenie << endl;
 	}
+	else
+		for (int i = 0; i < argc; i++)
+		{
+			ifstream plik(argv[i],ios::in);
+			listamagnesow=vappend(listamagnesow,wczytajmagnesy(plik));
+			plik.close();
 
-	ifstream plik("czastki",std::ios::in); //trzeba je jeszcze gdzieś tworzyć
+		}	
+	// cout << listamagnesow.size() << endl;	
 
+	// for (int i = 0; i < listamagnesow.size(); i++)
+	// {
+	// 	cout << listamagnesow[i].polozenie << endl;
+	// }
 
+	ifstream plik("czastki",ios::in); //trzeba je jeszcze gdzieś tworzyć
 
 
 
 	std::vector<proton> protony;
 	protony=wczytajprotony(plik);
+	plik.close();
 
+	// cout << protony.size() << endl;
 
 
 
@@ -144,7 +157,7 @@ int main(int argc, char const *argv[])
 	{
 		double t;
 		double dt=0.01;
-		while(protony[i].z<204) //gdzie są osie? no i trzeba by dodać jakoś zapisywanie trajektorii, chyba że sam bufor openGL wystarczy
+		while(protony[i].z<L) //gdzie są osie? no i trzeba by dodać jakoś zapisywanie trajektorii, chyba że sam bufor openGL wystarczy
 		{
 			// x+=px*t;
 			// y+=py*t;
