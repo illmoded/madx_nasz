@@ -1,4 +1,4 @@
-//czas P+K ~1h P20m+10m K2h
+//czas P+K ~1h P20m+10m K2h+niewiemile
 
 #include <vector>
 #include <stdio.h>
@@ -14,20 +14,42 @@ class magnes
 public:
 	double polozenie;
 	double dlugosc;
-	double indukcja; /// wsp k
+	double indukcja; // wsp k
 };
 
 class dipol:public magnes
 {
 public:
-	void poledipola(double x);	
+	double pole();
+	void kto();
 };
 
 class kwadrupol:public magnes
 {
 public:
-	void polekwadrupola(double x, double y);	
+	double pole(double x, double y);
+	void kto();
 };
+
+	double dipol::pole()
+	{
+		return dipol::indukcja;
+	}
+
+	void dipol::kto()
+	{
+		cout << "dipol" << endl;
+	}
+
+	double kwadrupol::pole(double x, double y)
+	{
+		return kwadrupol::indukcja*(x*x+y*y);
+	}
+
+	void kwadrupol::kto()
+	{
+		cout << "kwadrupol" << endl;
+	}
 
 class proton
 {
@@ -44,7 +66,7 @@ public:
 std::vector<proton>wczytajprotony(std::ifstream &plik)
 {
 	std::vector<proton> listap;
-	double id,a,b,c,d,e,f,g;
+	double a, b, c, d, e, f, g;
 	proton proton_;
 
 	int i=0;
@@ -96,8 +118,6 @@ std::vector<magnes>wczytajmagnesy(std::ifstream &plik)
 		lista[i].dlugosc=b;
 		lista[i].indukcja=c;
 		i++;j++;
-
-
 	}
 	return lista;	
 }
@@ -116,8 +136,9 @@ std::vector<magnes>vappend(std::vector<magnes> a, std::vector<magnes> b)
 
 int main(int argc, char const *argv[])
 {
-	double L=204.0;
-	std::vector<magnes> listamagnesow;	
+	double l=204.0;
+	double r=0.002;
+	std::vector<magnes> listamagnesow;	//a jak sie teraz odwolac do samych dipoli lub kwadrupoli w liscie?
 
 	if(argc==1){
 		ifstream plik("def_magn",ios::in);
@@ -131,17 +152,18 @@ int main(int argc, char const *argv[])
 			listamagnesow=vappend(listamagnesow,wczytajmagnesy(plik));
 			plik.close();
 
-		}	
-	// cout << listamagnesow.size() << endl;	
+		}
+
+	dipol D;
+	kwadrupol K;
+	// cout << listamagnesow.size() << endl;
 
 	// for (int i = 0; i < listamagnesow.size(); i++)
 	// {
-	// 	cout << listamagnesow[i].polozenie << endl;
+	// 	cout << i+1 << "\t" << listamagnesow[i].polozenie << endl;
 	// }
 
-	ifstream plik("input",ios::in); //trzeba je jeszcze gdzieś tworzyć
-
-
+	ifstream plik("input",ios::in);
 
 	std::vector<proton> protony;
 	protony=wczytajprotony(plik);
@@ -151,23 +173,20 @@ int main(int argc, char const *argv[])
 
 	ofstream zapis("output",ios::out);
 
-	///ruch, później może do innej funkcji
-	///eulerem, po co sie meczyc z czyms innym
 	for (int i = 0; i < protony.size(); i++)
 	{
 		double dt=0.001;
-		while(protony[i].z<L) //gdzie są osie? no i trzeba by dodać jakoś zapisywanie trajektorii, chyba że sam bufor openGL wystarczy
+		while(protony[i].z<l && protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
 		{
-			protony[i].x+=protony[i].px*dt;
-			protony[i].y+=protony[i].py*dt;
-			protony[i].z+=protony[i].pz*dt;
-			// cout << protony[i].z << endl;
+			protony[i].x+=dt*protony[i].px; //wprowadzenie tutaj dzielenia przez energie spowalnia program niesamowicie
+			protony[i].y+=dt*protony[i].py;
+			protony[i].z+=dt*protony[i].pz;
 
 			for (int j = 0; j < listamagnesow.size(); j++)
 			{
 				while(protony[i].z>listamagnesow[j].polozenie && protony[i].z<listamagnesow[j].polozenie+listamagnesow[j].dlugosc)
-				{
-					double E=protony[i].energia;
+				{	
+					double E=protony[i].energia;				
 					double Bx=listamagnesow[j].indukcja;
 					double By=listamagnesow[j].indukcja;
 					protony[i].px+=dt/E/E*protony[i].pz*By;
@@ -179,9 +198,11 @@ int main(int argc, char const *argv[])
 				}
 			}
 		}
-		cout << i+1 << endl;
-		zapis << i+1 << "\t" << protony[i].x << "\t" << protony[i].px << "\t" << protony[i].y << "\t" << protony[i].py
-		 << "\t" << protony[i].pz << "\t" << protony[i].energia << endl;
+
+		cout << "[" << 1000*i/protony.size()/10. << '%' << "]   " << "\r";
+		if(protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
+			zapis << i+1 << "\t" << protony[i].x << "\t" << protony[i].px << "\t" << protony[i].y << "\t" << protony[i].py
+		 	<< "\t" << protony[i].pz << "\t" << protony[i].energia << endl;
 	}
 
 	zapis.close();

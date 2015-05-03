@@ -9,7 +9,7 @@ const double E0=7000;
 const double pmax=3.;
 const double ksimax=.2;
 const double fimax=2*M_PI;
-const int I=100;
+const int I=1000;			//liczba czastek
 const double M=0.9383;
 double pmin=0., ksimin=0., fimin=0.;;
 double p, ksi, fi, r, E;
@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
 	int id=1;
 	srand ((unsigned)time(NULL));
 
-	for(int i=1; i<I*I; i++)
+	for(int i=1; i<I; i++)
 	{
 		r=(double)rand()/RAND_MAX;
 		p = pmin + (pmax-pmin)*r;
