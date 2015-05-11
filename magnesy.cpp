@@ -6,6 +6,7 @@
 #include <math.h>
 #include <fstream>
 #include <iostream>
+#include <typeinfo> //do nazw klas
 
 using namespace std;
 
@@ -15,6 +16,13 @@ public:
 	double polozenie;
 	double dlugosc;
 	double indukcja; // wsp k
+
+	virtual double pole() //trzeba inicjalizować funkcje wirtualne
+	{return 0;}
+	virtual void kto()
+	{}
+protected:
+	string s = typeid(magnes).name();//odtąd s jest nazwą klasy
 };
 
 class dipol:public magnes
@@ -139,6 +147,7 @@ int main(int argc, char const *argv[])
 	double l=204.0;
 	double r=0.002;
 	std::vector<magnes> listamagnesow;	//a jak sie teraz odwolac do samych dipoli lub kwadrupoli w liscie?
+										// przez zmienną s!
 
 	if(argc==1){
 		ifstream plik("def_magn",ios::in);
@@ -173,23 +182,28 @@ int main(int argc, char const *argv[])
 
 	ofstream zapis("output",ios::out);
 
+	double energiaa=1/protony[0].energia; //jest taka sama dla wszystkich, program też zwalnia, ale nie aż tak bardzo
+
 	for (int i = 0; i < protony.size(); i++)
-	{
+	{	
+		
+
 		double dt=0.001;
 		while(protony[i].z<l && protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
 		{
-			protony[i].x+=dt*protony[i].px; //wprowadzenie tutaj dzielenia przez energie spowalnia program niesamowicie
-			protony[i].y+=dt*protony[i].py;
-			protony[i].z+=dt*protony[i].pz;
+			protony[i].x+=dt*protony[i].px*energiaa; //wprowadzenie tutaj dzielenia przez energie spowalnia program niesamowicie
+			protony[i].y+=dt*protony[i].py*energiaa; //mnożenie jest szybsze?
+			protony[i].z+=dt*protony[i].pz*energiaa;
 
 			for (int j = 0; j < listamagnesow.size(); j++)
 			{
 				while(protony[i].z>listamagnesow[j].polozenie && protony[i].z<listamagnesow[j].polozenie+listamagnesow[j].dlugosc)
 				{	
-					double E=protony[i].energia;				
+					//funkcje na pole - jakoś, tak z indukcją to w ogóle działa?
+					double E=protony[i].energia;	//może wywalić, jest taka sama dla wszystkich 			
 					double Bx=listamagnesow[j].indukcja;
 					double By=listamagnesow[j].indukcja;
-					protony[i].px+=dt/E/E*protony[i].pz*By;
+					protony[i].px+=dt/E/E*protony[i].pz*By; //mnożenie!?!?!?
 					protony[i].py+=dt/E/E*protony[i].pz*Bx;
 					protony[i].pz+=dt/E/E*(protony[i].px*By-protony[i].py*Bx);
 					protony[i].x+=dt/E*protony[i].px;
