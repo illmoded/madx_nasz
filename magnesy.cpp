@@ -131,17 +131,17 @@ std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
 		lista[i]->indukcja=c;
 		i++;j++;
 	}
+
 	return lista;	
 }
 
-std::vector<magnes> vappend(std::vector<magnes> a, std::vector<magnes> b)
-{
-	a.reserve(a.size() + b.size());
-	a.insert(a.end(), b.begin(), b.end());
-	b.clear();
-	return a;
-}
-
+// std::vector<std::unique_ptr<magnes>> vappend(std::vector<std::unique_ptr<magnes>> a, std::vector<std::unique_ptr<magnes>> b)
+// {
+// 	a.reserve(a.size() + b.size());
+// 	a.insert(a.end(), std::make_move_iterator(b.begin()), std::make_move_iterator(b.end()));
+// 	b.clear();
+// 	return a;
+// }
 
 int main(int argc, char const *argv[])
 {
@@ -151,16 +151,18 @@ int main(int argc, char const *argv[])
 
 	if(argc==1){
 		ifstream plik("def_magn",ios::in);
-		listamagnesow=wczytajmagnesy(plik);
+		listamagnesow = wczytajmagnesy(plik);
 		plik.close();
 	}
-	// else
-	// 	for (int i = 0; i < argc; i++)
-	// 	{
-	// 		ifstream plik(argv[i],ios::in);
-	// 		listamagnesow=vappend(listamagnesow,wczytajmagnesy(plik));
-	// 		plik.close();
-	// 	}
+	else 
+		for (int i = 1; i <= argc; i++){
+			ifstream plik(argv[i],ios::in);
+			listamagnesow.reserve(listamagnesow.size()+wczytajmagnesy(plik).size()); 	//cos psuje sie przez to, resize tez nie dziala
+			listamagnesow.insert(listamagnesow.end(), 									//wpisanie konkretnej liczby lub usuniecie powoduje
+				std::make_move_iterator(wczytajmagnesy(plik).begin()), 					//naruszenie ochrony pamieci
+				std::make_move_iterator(wczytajmagnesy(plik).end()));					//wzialem to ze stackoverflow
+			plik.close();
+		}
 
 	// cout << listamagnesow.size() << endl;
 	for (int i = 0; i < listamagnesow.size(); i++)
