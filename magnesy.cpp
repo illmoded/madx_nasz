@@ -6,7 +6,8 @@
 #include <math.h>
 #include <fstream>
 #include <iostream>
-#include <typeinfo> //do nazw klas
+#include <memory> // do unique_ptr
+// #include <typeinfo> //do nazw klas
 
 using namespace std;
 
@@ -16,47 +17,54 @@ public:
 	double polozenie;
 	double dlugosc;
 	double indukcja; // wsp k
+	int name;
 
 	virtual double pole() //trzeba inicjalizować funkcje wirtualne
-	{return 0;}
+	{
+		return 0;
+	}
 	virtual void kto()
-	{}
-protected:
-	string s = typeid(magnes).name();//odtąd s jest nazwą klasy
+	{
+		name=2e2;
+		cout << name << endl;
+	}
+	// string s = typeid(magnes).name(); //odtąd s jest nazwą klasy
 };
 
 class dipol:public magnes
 {
 public:
-	double pole();
-	void kto();
+	virtual double pole();
+	virtual void kto();
 };
 
 class kwadrupol:public magnes
 {
 public:
-	double pole(double x, double y);
-	void kto();
+	virtual double pole(double x, double y);
+	virtual void kto();
 };
 
 	double dipol::pole()
 	{
-		return dipol::indukcja;
+		return indukcja;
 	}
 
 	void dipol::kto()
 	{
-		cout << "dipol" << endl;
+		name=2;
+		// cout << name <<endl;
 	}
 
 	double kwadrupol::pole(double x, double y)
-	{
-		return kwadrupol::indukcja*(x*x+y*y);
+	{	
+		return indukcja*(x*x+y*y);
 	}
 
 	void kwadrupol::kto()
 	{
-		cout << "kwadrupol" << endl;
+		name=4;
+		// cout << name <<endl;
 	}
 
 class proton
@@ -111,10 +119,12 @@ std::vector<magnes>wczytajmagnesy(std::ifstream &plik)
 		if (d==2)
 		{
 			lista.push_back(dip);
+			// dip.kto();
 		}
 		else if (d==4)
 		{
 			lista.push_back(kwa);
+			// kwa.kto();
 		}
 		else
 		{
@@ -122,6 +132,7 @@ std::vector<magnes>wczytajmagnesy(std::ifstream &plik)
 			j++;
 			continue;
 		}
+		// lista[i].kto();
 		lista[i].polozenie=a;
 		lista[i].dlugosc=b;
 		lista[i].indukcja=c;
@@ -146,12 +157,11 @@ int main(int argc, char const *argv[])
 {
 	double l=204.0;
 	double r=0.002;
-	std::vector<magnes> listamagnesow;	//a jak sie teraz odwolac do samych dipoli lub kwadrupoli w liscie?
-										// przez zmienną s!
+	std::vector<magnes> listamagnesow;
 
 	if(argc==1){
 		ifstream plik("def_magn",ios::in);
-		listamagnesow=vappend(listamagnesow,wczytajmagnesy(plik));
+		listamagnesow=wczytajmagnesy(plik);
 		plik.close();
 	}
 	else
@@ -163,14 +173,12 @@ int main(int argc, char const *argv[])
 
 		}
 
-	dipol D;
-	kwadrupol K;
 	// cout << listamagnesow.size() << endl;
-
-	// for (int i = 0; i < listamagnesow.size(); i++)
-	// {
-	// 	cout << i+1 << "\t" << listamagnesow[i].polozenie << endl;
-	// }
+	for (int i = 0; i < listamagnesow.size(); i++)
+	{
+		// listamagnesow[i].kto();
+		// cout << i+1 << "\t" << listamagnesow[i].indukcja << endl;
+	}
 
 	ifstream plik("input",ios::in);
 
@@ -184,7 +192,7 @@ int main(int argc, char const *argv[])
 
 	double energiaa=1/protony[0].energia; //jest taka sama dla wszystkich, program też zwalnia, ale nie aż tak bardzo
 
-	for (int i = 0; i < protony.size(); i++)
+/*	for (int i = 0; i < protony.size(); i++)
 	{	
 		
 
@@ -219,6 +227,6 @@ int main(int argc, char const *argv[])
 		 	<< "\t" << protony[i].pz << "\t" << protony[i].energia << endl;
 	}
 
-	zapis.close();
+	zapis.close();*/
 	return 0;
 }
