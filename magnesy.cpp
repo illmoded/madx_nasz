@@ -19,7 +19,7 @@ public:
 	double indukcja; // wsp k
 	int name;
 
-	virtual double pole() //trzeba inicjalizować funkcje wirtualne
+	virtual double pole(double x, double y) //trzeba inicjalizować funkcje wirtualne
 	{
 		return 0;
 	}
@@ -102,7 +102,6 @@ std::vector<proton>wczytajprotony(std::ifstream &plik)
 
 std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
 {
-	//może do jakiejś klasy?
 	std::vector<std::unique_ptr<magnes>> lista;	
 	double a,b,c,d;
 	dipol *dip = new dipol();
@@ -135,11 +134,8 @@ std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
 	return lista;	
 }
 
-//fstream a("temp.txt", ios::in); konstruktor domyślny, bez .open(), zamiast nazwy argv?
-
-std::vector<magnes>vappend(std::vector<magnes> a, std::vector<magnes> b)
+std::vector<magnes> vappend(std::vector<magnes> a, std::vector<magnes> b)
 {
-	//moze powinien byc void?
 	a.reserve(a.size() + b.size());
 	a.insert(a.end(), b.begin(), b.end());
 	b.clear();
@@ -183,27 +179,25 @@ int main(int argc, char const *argv[])
 
 	ofstream zapis("output",ios::out);
 
-	double energiaa=1/protony[0].energia; //jest taka sama dla wszystkich, program też zwalnia, ale nie aż tak bardzo
+	double dt=0.001;
 
-/*	for (int i = 0; i < protony.size(); i++)
+	/*for (int i = 0; i < protony.size(); i++)
 	{	
-		
-
-		double dt=0.001;
 		while(protony[i].z<l && protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
 		{
+			double energiaa=1./protony[i].energia; // nie jest taka sama...
 			protony[i].x+=dt*protony[i].px*energiaa; //wprowadzenie tutaj dzielenia przez energie spowalnia program niesamowicie
 			protony[i].y+=dt*protony[i].py*energiaa; //mnożenie jest szybsze?
 			protony[i].z+=dt*protony[i].pz*energiaa;
 
 			for (int j = 0; j < listamagnesow.size(); j++)
 			{
-				while(protony[i].z>listamagnesow[j].polozenie && protony[i].z<listamagnesow[j].polozenie+listamagnesow[j].dlugosc)
+				while(protony[i].z>listamagnesow[j]->polozenie && protony[i].z<listamagnesow[j]->polozenie+listamagnesow[j]->dlugosc)
 				{	
 					//funkcje na pole - jakoś, tak z indukcją to w ogóle działa?
 					double E=protony[i].energia;	//może wywalić, jest taka sama dla wszystkich 			
-					double Bx=listamagnesow[j].indukcja;
-					double By=listamagnesow[j].indukcja;
+					double Bx=listamagnesow[j]->pole(protony[i].x, protony[i].y);
+					double By=listamagnesow[j]->pole(protony[i].x, protony[i].y);
 					protony[i].px+=dt/E/E*protony[i].pz*By; //mnożenie!?!?!?
 					protony[i].py+=dt/E/E*protony[i].pz*Bx;
 					protony[i].pz+=dt/E/E*(protony[i].px*By-protony[i].py*Bx);

@@ -9,7 +9,7 @@ const double E0=7000;
 const double pmax=3.;
 const double ksimax=.2;
 const double fimax=2*M_PI;
-const int I=1000;			//liczba czastek
+int I=1000;			//liczba czastek
 const double M=0.9383;
 double pmin=0., ksimin=0., fimin=0.;;
 double p, ksi, fi, r, E;
