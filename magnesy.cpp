@@ -103,13 +103,13 @@ std::vector<proton>wczytajprotony(std::ifstream &plik)
 	return listap;
 }
 
-std::vector<magnes>wczytajmagnesy(std::ifstream &plik)
+std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
 {
 	//może do jakiejś klasy?
-	std::vector<magnes> lista;	
+	std::vector<std::unique_ptr<magnes>> lista;	
 	double a,b,c,d;
-	dipol dip;
-	kwadrupol kwa;
+	dipol *dip = new dipol();
+	kwadrupol *kwa = new kwadrupol();
 
 	int i=0;
 	int j=1;
@@ -118,12 +118,12 @@ std::vector<magnes>wczytajmagnesy(std::ifstream &plik)
 	{
 		if (d==2)
 		{
-			lista.push_back(dip);
+			lista.push_back(std::unique_ptr<magnes>(dip));
 			// dip.kto();
 		}
 		else if (d==4)
 		{
-			lista.push_back(kwa);
+			lista.push_back(std::unique_ptr<magnes>(kwa));
 			// kwa.kto();
 		}
 		else
@@ -133,9 +133,9 @@ std::vector<magnes>wczytajmagnesy(std::ifstream &plik)
 			continue;
 		}
 		// lista[i].kto();
-		lista[i].polozenie=a;
-		lista[i].dlugosc=b;
-		lista[i].indukcja=c;
+		lista[i]->polozenie=a;
+		lista[i]->dlugosc=b;
+		lista[i]->indukcja=c;
 		i++;j++;
 	}
 	return lista;	
@@ -157,21 +157,20 @@ int main(int argc, char const *argv[])
 {
 	double l=204.0;
 	double r=0.002;
-	std::vector<magnes> listamagnesow;
+	std::vector<std::unique_ptr<magnes>> listamagnesow;
 
 	if(argc==1){
 		ifstream plik("def_magn",ios::in);
 		listamagnesow=wczytajmagnesy(plik);
 		plik.close();
 	}
-	else
-		for (int i = 0; i < argc; i++)
-		{
-			ifstream plik(argv[i],ios::in);
-			listamagnesow=vappend(listamagnesow,wczytajmagnesy(plik));
-			plik.close();
-
-		}
+	// else
+	// 	for (int i = 0; i < argc; i++)
+	// 	{
+	// 		ifstream plik(argv[i],ios::in);
+	// 		listamagnesow=vappend(listamagnesow,wczytajmagnesy(plik));
+	// 		plik.close();
+	// 	}
 
 	// cout << listamagnesow.size() << endl;
 	for (int i = 0; i < listamagnesow.size(); i++)
