@@ -8,8 +8,11 @@
 #include <iostream>
 #include <memory> // do unique_ptr
 // #include <typeinfo> //do nazw klas
+#include <boost/thread.hpp>
+// #include <boost/date_time.hpp>
 
 using namespace std;
+unsigned int nthreads = boost::thread::hardware_concurrency(); //ilość rdzeni, jest też po prostu w threadzie z c11
 
 class magnes
 {
@@ -27,7 +30,6 @@ public:
 	{
 		name=0;
 	}
-	// string s = typeid(magnes).name(); //odtąd s jest nazwą klasy
 };
 
 class dipol:public magnes
