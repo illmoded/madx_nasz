@@ -25,8 +25,7 @@ public:
 	}
 	virtual void kto()
 	{
-		name=2e2;
-		cout << name << endl;
+		name=0;
 	}
 	// string s = typeid(magnes).name(); //odtąd s jest nazwą klasy
 };
@@ -53,7 +52,6 @@ public:
 	void dipol::kto()
 	{
 		name=2;
-		// cout << name <<endl;
 	}
 
 	double kwadrupol::pole(double x, double y)
@@ -64,7 +62,6 @@ public:
 	void kwadrupol::kto()
 	{
 		name=4;
-		// cout << name <<endl;
 	}
 
 class proton
@@ -119,12 +116,10 @@ std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
 		if (d==2)
 		{
 			lista.push_back(std::unique_ptr<magnes>(dip));
-			// dip.kto();
 		}
 		else if (d==4)
 		{
 			lista.push_back(std::unique_ptr<magnes>(kwa));
-			// kwa.kto();
 		}
 		else
 		{
@@ -132,7 +127,6 @@ std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
 			j++;
 			continue;
 		}
-		// lista[i].kto();
 		lista[i]->polozenie=a;
 		lista[i]->dlugosc=b;
 		lista[i]->indukcja=c;
@@ -175,8 +169,8 @@ int main(int argc, char const *argv[])
 	// cout << listamagnesow.size() << endl;
 	for (int i = 0; i < listamagnesow.size(); i++)
 	{
-		// listamagnesow[i].kto();
-		// cout << i+1 << "\t" << listamagnesow[i].indukcja << endl;
+		listamagnesow[i]->kto();
+		cout << i+1 << "\t" << listamagnesow[i]->name << endl;
 	}
 
 	ifstream plik("input",ios::in);
