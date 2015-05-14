@@ -9,7 +9,6 @@
 #include <thread>
 #include <mutex>
 
-
 using namespace std;
 
 class magnes
@@ -78,7 +77,7 @@ public:
 
 typedef boost::shared_ptr<magnes> magnes_ptr;
 
-std::vector<proton>wczytajprotony(std::ifstream &plik)
+std::vector<proton> wczytajprotony(std::ifstream &plik)
 {
 	std::vector<proton> listap;
 	double a, b, c, d, e, f, g;
@@ -152,15 +151,14 @@ void lock(std::string const& msg) //zapisywanie do pliku...
 	blokada.lock();
     ofstream zapis("output",ios::app);
 
-    zapis << msg;
+    zapis << msg << endl;
 
 	zapis.close();  
     blokada.unlock();
 }
 
-void oblicz(std::vector<magnes_ptr> magnesy,std::vector<proton> protony, double l, double r)
+void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double l, double r)
 {
-	
 	double dt=0.001;
 	for (int i = 0; i < protony.size(); i++)
 	{	
@@ -187,25 +185,26 @@ void oblicz(std::vector<magnes_ptr> magnesy,std::vector<proton> protony, double 
 				}
 			}
 		}
-		
 
 		cout << "[" << 1000*i/protony.size()/10. << '%' << "]   " << "\r";
 		if(protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
 		{
 			std::string zapis;
-			stringstream(zapis) << i+1 << "\t" << protony[i].x << "\t" << protony[i].px << "\t" << protony[i].y << "\t" << protony[i].py
-		 	<< "\t" << protony[i].pz << "\t" << protony[i].energia << endl;
+			std::stringstream ss(zapis);
+			ss << i+1 << "\t" << protony[i].x << "\t" << protony[i].px << "\t" << protony[i].y << "\t" << protony[i].py
+		 	<< "\t" << protony[i].pz << "\t" << protony[i].energia;
+		 	// cout << ss.str() << endl;
+		 	zapis = ss.str();
 		 	lock(zapis);
 		}
-			
 	}
 }
 
 int main(int argc, char const *argv[])
 {
-
 	unsigned int rdzenie;
 	rdzenie=std::thread::hardware_concurrency();
+	remove("output");
 
 	if (rdzenie==0)//czyli że nie wykrywa
 	{
@@ -226,11 +225,7 @@ int main(int argc, char const *argv[])
 		for (int i = 1; i <= argc; i++){
 			ifstream plik(argv[i],ios::in);
 			temp = wczytajmagnesy(plik);
-			listamagnesow.reserve(listamagnesow.size()+temp.size());
-			listamagnesow.insert(listamagnesow.end(),
-				std::make_move_iterator(temp.begin()),
-				std::make_move_iterator(temp.end()));
-			temp.clear();
+			listamagnesow = vappend(listamagnesow, temp);
 			plik.close();
 		}
 
@@ -242,7 +237,6 @@ int main(int argc, char const *argv[])
 	// }
 
 	ifstream plik("input",ios::in);
-
 	std::vector<proton> protony;
 	protony=wczytajprotony(plik);
 	plik.close();
@@ -250,16 +244,15 @@ int main(int argc, char const *argv[])
 	// cout << protony.size() << endl;
 
 	std::thread thr[rdzenie];
-	for (int i = 0; i < rdzenie; ++i)
+	for (int i = 0; i < rdzenie; i++)
 	{
-		thr[i]=std::thread(oblicz,listamagnesow,protony,l,r);//ma być tylko 1/rdzenie protonów w wektorze
+		thr[i]=std::thread(oblicz, listamagnesow, protony, l, r);//ma być tylko 1/rdzenie protonów w wektorze
 	}
 
-	for (int i = 0; i < rdzenie; ++i)
+	for (int i = 0; i < rdzenie; i++)
 	{
 		thr[i].join();
 	}
-
 
 	return 0;
 }
