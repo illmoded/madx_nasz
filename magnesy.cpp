@@ -213,40 +213,46 @@ int main(int argc, char const *argv[])
 
 	double l=204.0;
 	double r=0.002;
-	std::vector<magnes_ptr> listamagnesow;
+	std::vector<magnes_ptr> magnes_vec;
 	std::vector<magnes_ptr> temp;
 
 	if(argc==1){
 		ifstream plik("def_magn",ios::in);
-		listamagnesow = wczytajmagnesy(plik);
+		magnes_vec = wczytajmagnesy(plik);
 		plik.close();
 	}
 	else 
 		for (int i = 1; i <= argc; i++){
 			ifstream plik(argv[i],ios::in);
 			temp = wczytajmagnesy(plik);
-			listamagnesow = vappend(listamagnesow, temp);
+			magnes_vec = vappend(magnes_vec, temp);
 			plik.close();
 		}
 
-	// cout << listamagnesow.size() << endl;
-	// for (int i = 0; i < listamagnesow.size(); i++)
+	// cout << magnes_vec.size() << endl;
+	// for (int i = 0; i < magnes_vec.size(); i++)
 	// {
-	// 	listamagnesow[i]->kto();
-	// 	cout << i+1 << "\t" << listamagnesow[i]->name << endl;
+	// 	magnes_vec[i]->kto();
+	// 	cout << i+1 << "\t" << magnes_vec[i]->name << endl;
 	// }
 
 	ifstream plik("input",ios::in);
-	std::vector<proton> protony;
-	protony=wczytajprotony(plik);
+	std::vector<proton> proton_vec;
+	proton_vec=wczytajprotony(plik);
 	plik.close();
 
-	// cout << protony.size() << endl;
+	// cout << proton_vec.size() << endl;
+
+	std::vector<proton> proton_tab[rdzenie];
+	int I=proton_vec.size()/rdzenie;
+	for(int i = 0; i < rdzenie; i++){
+		
+	}
 
 	std::thread thr[rdzenie];
 	for (int i = 0; i < rdzenie; i++)
 	{
-		thr[i]=std::thread(oblicz, listamagnesow, protony, l, r);//ma być tylko 1/rdzenie protonów w wektorze
+		thr[i]=std::thread(oblicz, magnes_vec, proton_vec, l, r);//ma być tylko 1/rdzenie protonów w wektorze
 	}
 
 	for (int i = 0; i < rdzenie; i++)
