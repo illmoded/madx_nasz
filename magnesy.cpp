@@ -150,7 +150,7 @@ std::mutex blokada;
 void lock(std::string const& msg) //zapisywanie do pliku...
 {
 	blokada.lock();
-    ofstream zapis("output",ios::out::app);
+    ofstream zapis("output",ios::app);
 
     zapis << msg;
 
