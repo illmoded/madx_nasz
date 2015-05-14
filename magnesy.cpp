@@ -185,6 +185,8 @@ int main(int argc, char const *argv[])
 
 	double dt=0.001;
 
+	int podzial = protony.size()/nthreads;
+
 	/*for (int i = 0; i < protony.size(); i++)
 	{	
 		while(protony[i].z<l && protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
