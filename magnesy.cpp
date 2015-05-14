@@ -6,8 +6,7 @@
 #include <math.h>
 #include <fstream>
 #include <iostream>
-#include <memory> // do unique_ptr
-// #include <typeinfo> //do nazw klas
+#include <boost/shared_ptr.hpp>
 
 using namespace std;
 
@@ -16,10 +15,10 @@ class magnes
 public:
 	double polozenie;
 	double dlugosc;
-	double indukcja; // wsp k
+	double indukcja;
 	int name;
 
-	virtual double pole(double x, double y) //trzeba inicjalizować funkcje wirtualne
+	virtual double pole(double x, double y)
 	{
 		return 0;
 	}
@@ -27,7 +26,6 @@ public:
 	{
 		name=0;
 	}
-	// string s = typeid(magnes).name(); //odtąd s jest nazwą klasy
 };
 
 class dipol:public magnes
@@ -76,6 +74,8 @@ public:
 	double energia;
 };
 
+typedef boost::shared_ptr<magnes> magnes_ptr;
+
 std::vector<proton>wczytajprotony(std::ifstream &plik)
 {
 	std::vector<proton> listap;
@@ -100,12 +100,12 @@ std::vector<proton>wczytajprotony(std::ifstream &plik)
 	return listap;
 }
 
-std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
+std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 {
-	std::vector<std::unique_ptr<magnes>> lista;	
+	std::vector<magnes_ptr> lista;	
 	double a,b,c,d;
-	dipol *dip = new dipol();
-	kwadrupol *kwa = new kwadrupol();
+	magnes_ptr D(new dipol);
+	magnes_ptr K(new kwadrupol);
 
 	int i=0;
 	int j=1;
@@ -114,11 +114,11 @@ std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
 	{
 		if (d==2)
 		{
-			lista.push_back(std::unique_ptr<magnes>(dip));
+			lista.push_back(D);
 		}
 		else if (d==4)
 		{
-			lista.push_back(std::unique_ptr<magnes>(kwa));
+			lista.push_back(K);
 		}
 		else
 		{
@@ -129,25 +129,26 @@ std::vector<std::unique_ptr<magnes>> wczytajmagnesy(std::ifstream &plik)
 		lista[i]->polozenie=a;
 		lista[i]->dlugosc=b;
 		lista[i]->indukcja=c;
-		i++;j++;
+		i++;
+		j++;
 	}
-
 	return lista;	
 }
 
-// std::vector<std::unique_ptr<magnes>> vappend(std::vector<std::unique_ptr<magnes>> a, std::vector<std::unique_ptr<magnes>> b)
-// {
-// 	a.reserve(a.size() + b.size());
-// 	a.insert(a.end(), std::make_move_iterator(b.begin()), std::make_move_iterator(b.end()));
-// 	b.clear();
-// 	return a;
-// }
+std::vector<magnes_ptr> vappend(std::vector<magnes_ptr> a, std::vector<magnes_ptr> b)
+{
+	a.reserve(a.size() + b.size());
+	a.insert(a.end(), std::make_move_iterator(b.begin()), std::make_move_iterator(b.end()));
+	b.clear();
+	return a;
+}
 
 int main(int argc, char const *argv[])
 {
 	double l=204.0;
 	double r=0.002;
-	std::vector<std::unique_ptr<magnes>> listamagnesow;
+	std::vector<magnes_ptr> listamagnesow;
+	std::vector<magnes_ptr> temp;
 
 	if(argc==1){
 		ifstream plik("def_magn",ios::in);
@@ -157,19 +158,21 @@ int main(int argc, char const *argv[])
 	else 
 		for (int i = 1; i <= argc; i++){
 			ifstream plik(argv[i],ios::in);
-			listamagnesow.reserve(listamagnesow.size()+wczytajmagnesy(plik).size()); 	//cos psuje sie przez to, resize tez nie dziala
-			listamagnesow.insert(listamagnesow.end(), 									//wpisanie konkretnej liczby lub usuniecie powoduje
-				std::make_move_iterator(wczytajmagnesy(plik).begin()), 					//naruszenie ochrony pamieci
-				std::make_move_iterator(wczytajmagnesy(plik).end()));					//wzialem to ze stackoverflow
+			temp = wczytajmagnesy(plik);
+			listamagnesow.reserve(listamagnesow.size()+temp.size());
+			listamagnesow.insert(listamagnesow.end(),
+				std::make_move_iterator(temp.begin()),
+				std::make_move_iterator(temp.end()));
+			temp.clear();
 			plik.close();
 		}
 
 	// cout << listamagnesow.size() << endl;
-	for (int i = 0; i < listamagnesow.size(); i++)
-	{
-		listamagnesow[i]->kto();
-		cout << i+1 << "\t" << listamagnesow[i]->name << endl;
-	}
+	// for (int i = 0; i < listamagnesow.size(); i++)
+	// {
+	// 	listamagnesow[i]->kto();
+	// 	cout << i+1 << "\t" << listamagnesow[i]->name << endl;
+	// }
 
 	ifstream plik("input",ios::in);
 
@@ -182,8 +185,7 @@ int main(int argc, char const *argv[])
 	ofstream zapis("output",ios::out);
 
 	double dt=0.001;
-
-	/*for (int i = 0; i < protony.size(); i++)
+	for (int i = 0; i < protony.size(); i++)
 	{	
 		while(protony[i].z<l && protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
 		{
@@ -216,6 +218,6 @@ int main(int argc, char const *argv[])
 		 	<< "\t" << protony[i].pz << "\t" << protony[i].energia << endl;
 	}
 
-	zapis.close();*/
+	zapis.close();
 	return 0;
 }
