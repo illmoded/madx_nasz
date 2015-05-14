@@ -1,5 +1,3 @@
-//czas P+K ~1h P20m+10m K2h+niewiemile
-
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
@@ -189,20 +187,19 @@ int main(int argc, char const *argv[])
 	{	
 		while(protony[i].z<l && protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
 		{
-			double energiaa=1./protony[i].energia; // nie jest taka sama...
-			protony[i].x+=dt*protony[i].px*energiaa; //wprowadzenie tutaj dzielenia przez energie spowalnia program niesamowicie
-			protony[i].y+=dt*protony[i].py*energiaa; //mnożenie jest szybsze?
+			double energiaa=1./protony[i].energia;
+			protony[i].x+=dt*protony[i].px*energiaa;
+			protony[i].y+=dt*protony[i].py*energiaa;
 			protony[i].z+=dt*protony[i].pz*energiaa;
 
 			for (int j = 0; j < listamagnesow.size(); j++)
 			{
 				while(protony[i].z>listamagnesow[j]->polozenie && protony[i].z<listamagnesow[j]->polozenie+listamagnesow[j]->dlugosc)
 				{	
-					//funkcje na pole - jakoś, tak z indukcją to w ogóle działa?
-					double E=protony[i].energia;	//może wywalić, jest taka sama dla wszystkich 			
+					double E=protony[i].energia;		
 					double Bx=listamagnesow[j]->pole(protony[i].x, protony[i].y);
 					double By=listamagnesow[j]->pole(protony[i].x, protony[i].y);
-					protony[i].px+=dt/E/E*protony[i].pz*By; //mnożenie!?!?!?
+					protony[i].px+=dt/E/E*protony[i].pz*By;
 					protony[i].py+=dt/E/E*protony[i].pz*Bx;
 					protony[i].pz+=dt/E/E*(protony[i].px*By-protony[i].py*Bx);
 					protony[i].x+=dt/E*protony[i].px;

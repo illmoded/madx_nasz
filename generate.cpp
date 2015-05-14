@@ -3,6 +3,7 @@
 #include <math.h>
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 const double E0=7000;
@@ -19,6 +20,7 @@ int main(int argc, char const *argv[])
 	fstream plik;
 	plik.open("input",fstream::out);
 	int id=1;
+	if(argc>1) I = atoi(argv[1])+1;
 	srand ((unsigned)time(NULL));
 
 	for(int i=1; i<I; i++)
