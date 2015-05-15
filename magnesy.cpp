@@ -146,7 +146,7 @@ std::vector<magnes_ptr> vappend(std::vector<magnes_ptr> a, std::vector<magnes_pt
 
 std::mutex blokada;
 
-void lock(std::string const& msg) //zapisywanie do pliku...
+void lock(std::string const& msg)
 {
 	blokada.lock();
     ofstream zapis("output",ios::app);
@@ -206,7 +206,7 @@ int main(int argc, char const *argv[])
 	rdzenie=std::thread::hardware_concurrency();
 	remove("output");
 
-	if (rdzenie==0)//czyli że nie wykrywa
+	if (rdzenie==0) //czyli że nie wykrywa
 	{
 		rdzenie=2;
 	}
@@ -214,7 +214,7 @@ int main(int argc, char const *argv[])
 	double l=204.0;
 	double r=0.002;
 	std::vector<magnes_ptr> magnes_vec;
-	std::vector<magnes_ptr> temp;
+	std::vector<magnes_ptr> magnes_temp;
 
 	if(argc==1){
 		ifstream plik("def_magn",ios::in);
@@ -224,8 +224,8 @@ int main(int argc, char const *argv[])
 	else 
 		for (int i = 1; i <= argc; i++){
 			ifstream plik(argv[i],ios::in);
-			temp = wczytajmagnesy(plik);
-			magnes_vec = vappend(magnes_vec, temp);
+			magnes_temp = wczytajmagnesy(plik);
+			magnes_vec = vappend(magnes_vec, magnes_temp);
 			plik.close();
 		}
 
@@ -246,13 +246,16 @@ int main(int argc, char const *argv[])
 	std::vector<proton> proton_tab[rdzenie];
 	int I=proton_vec.size()/rdzenie;
 	for(int i = 0; i < rdzenie; i++){
-		
+		std::vector<proton>::const_iterator first = proton_vec.begin()+i*I;
+		std::vector<proton>::const_iterator last = proton_vec.begin()+(i+1)*I;
+		std::vector<proton> proton_temp(first, last);
+		proton_tab[i] = proton_temp;
 	}
 
 	std::thread thr[rdzenie];
 	for (int i = 0; i < rdzenie; i++)
 	{
-		thr[i]=std::thread(oblicz, magnes_vec, proton_vec, l, r);//ma być tylko 1/rdzenie protonów w wektorze
+		thr[i]=std::thread(oblicz, magnes_vec, proton_tab[i], l, r);
 	}
 
 	for (int i = 0; i < rdzenie; i++)
