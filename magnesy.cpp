@@ -174,8 +174,8 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 				while(protony[i].z>magnesy[j]->polozenie && protony[i].z<magnesy[j]->polozenie+magnesy[j]->dlugosc)
 				{	
 					double E=protony[i].energia;		
-					double Bx=listamagnesow[j]->pole(protony[i].x, protony[i].y);
 					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y);
+					double By=magnesy[j]->pole(protony[i].x, protony[i].y);
 					protony[i].px+=dt/E/E*protony[i].pz*By;
 					protony[i].py+=dt/E/E*protony[i].pz*Bx;
 					protony[i].pz+=dt/E/E*(protony[i].px*By-protony[i].py*Bx);
