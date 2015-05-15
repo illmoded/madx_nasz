@@ -19,9 +19,10 @@ public:
 	double indukcja;
 	int name;
 
-	virtual double pole(double, double)
+	virtual std::vector<double> pole(double x, double y)
 	{
-		return 0;
+		std::vector<double> vec;
+		return vec;
 	}
 	virtual void kto()
 	{
@@ -32,20 +33,23 @@ public:
 class dipol:public magnes
 {
 public:
-	virtual double pole();
+	virtual std::vector<double> pole(double x, double y);
 	virtual void kto();
 };
 
 class kwadrupol:public magnes
 {
 public:
-	virtual double pole(double x, double y);
+	virtual std::vector<double> pole(double x, double y);
 	virtual void kto();
 };
 
-	double dipol::pole()
+	std::vector<double> dipol::pole(double x, double y)
 	{
-		return indukcja;
+		std::vector<double> vec;
+		vec.push_back(0);
+		vec.push_back(indukcja);
+		return vec;
 	}
 
 	void dipol::kto()
@@ -53,9 +57,12 @@ public:
 		name=2;
 	}
 
-	double kwadrupol::pole(double x, double y)
-	{	
-		return indukcja*(x*x+y*y);
+	std::vector<double> kwadrupol::pole(double x, double y)	///dokończyć trzeba
+	{
+		std::vector<double> vec;
+		vec.push_back(0);
+		vec.push_back(0);
+		return vec;
 	}
 
 	void kwadrupol::kto()
@@ -159,7 +166,7 @@ void lock(std::string const& msg)
 
 void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double l, double r)
 {
-	double dt=0.001;
+	double dt=0.1;
 	for (int i = 0; i < protony.size(); i++)
 	{	
 		while(protony[i].z<l && protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
@@ -173,9 +180,10 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 			{
 				while(protony[i].z>magnesy[j]->polozenie && protony[i].z<magnesy[j]->polozenie+magnesy[j]->dlugosc)
 				{	
-					double E=protony[i].energia;		
-					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y);
-					double By=magnesy[j]->pole(protony[i].x, protony[i].y);
+					double E=protony[i].energia;
+					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y)[0];
+					double By=magnesy[j]->pole(protony[i].x, protony[i].y)[1];
+					cout << i << "\t" << protony[i].z << "\t" << Bx << "\t" << By << endl;
 					protony[i].px+=dt/E/E*protony[i].pz*By;
 					protony[i].py+=dt/E/E*protony[i].pz*Bx;
 					protony[i].pz+=dt/E/E*(protony[i].px*By-protony[i].py*Bx);
@@ -186,7 +194,7 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 			}
 		}
 
-		cout << "[" << 1000*i/protony.size()/10. << '%' << "]   " << "\r";
+		// cout << "[" << 1000*i/protony.size()/10. << '%' << "]   " << "\r";
 		if(protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
 		{
 			std::string zapis;
@@ -210,6 +218,7 @@ int main(int argc, char const *argv[])
 	{
 		rdzenie=2;
 	}
+	rdzenie=1;
 
 	double l=204.0;
 	double r=0.002;
@@ -233,7 +242,7 @@ int main(int argc, char const *argv[])
 	// for (int i = 0; i < magnes_vec.size(); i++)
 	// {
 	// 	magnes_vec[i]->kto();
-	// 	cout << i+1 << "\t" << magnes_vec[i]->name << endl;
+	// 	cout << i+1 << "\t" << magnes_vec[i]->pole(1,1) << endl;
 	// }
 
 	ifstream plik("input.txt",ios::in);
