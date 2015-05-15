@@ -4,7 +4,10 @@
 #include <math.h>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <boost/shared_ptr.hpp>
+#include <thread>
+#include <mutex>
 
 using namespace std;
 
@@ -74,7 +77,7 @@ public:
 
 typedef boost::shared_ptr<magnes> magnes_ptr;
 
-std::vector<proton>wczytajprotony(std::ifstream &plik)
+std::vector<proton> wczytajprotony(std::ifstream &plik)
 {
 	std::vector<proton> listap;
 	double a, b, c, d, e, f, g;
@@ -141,47 +144,21 @@ std::vector<magnes_ptr> vappend(std::vector<magnes_ptr> a, std::vector<magnes_pt
 	return a;
 }
 
-int main(int argc, char const *argv[])
+std::mutex blokada;
+
+void lock(std::string const& msg)
 {
-	double l=204.0;
-	double r=0.002;
-	std::vector<magnes_ptr> listamagnesow;
-	std::vector<magnes_ptr> temp;
+	blokada.lock();
+    ofstream zapis("output",ios::app);
 
-	if(argc==1){
-		ifstream plik("def_magn",ios::in);
-		listamagnesow = wczytajmagnesy(plik);
-		plik.close();
-	}
-	else 
-		for (int i = 1; i <= argc; i++){
-			ifstream plik(argv[i],ios::in);
-			temp = wczytajmagnesy(plik);
-			listamagnesow.reserve(listamagnesow.size()+temp.size());
-			listamagnesow.insert(listamagnesow.end(),
-				std::make_move_iterator(temp.begin()),
-				std::make_move_iterator(temp.end()));
-			temp.clear();
-			plik.close();
-		}
+    zapis << msg << endl;
 
-	// cout << listamagnesow.size() << endl;
-	// for (int i = 0; i < listamagnesow.size(); i++)
-	// {
-	// 	listamagnesow[i]->kto();
-	// 	cout << i+1 << "\t" << listamagnesow[i]->name << endl;
-	// }
+	zapis.close();  
+    blokada.unlock();
+}
 
-	ifstream plik("input",ios::in);
-
-	std::vector<proton> protony;
-	protony=wczytajprotony(plik);
-	plik.close();
-
-	// cout << protony.size() << endl;
-
-	ofstream zapis("output",ios::out);
-
+void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double l, double r)
+{
 	double dt=0.001;
 	for (int i = 0; i < protony.size(); i++)
 	{	
@@ -192,13 +169,13 @@ int main(int argc, char const *argv[])
 			protony[i].y+=dt*protony[i].py*energiaa;
 			protony[i].z+=dt*protony[i].pz*energiaa;
 
-			for (int j = 0; j < listamagnesow.size(); j++)
+			for (int j = 0; j < magnesy.size(); j++)
 			{
-				while(protony[i].z>listamagnesow[j]->polozenie && protony[i].z<listamagnesow[j]->polozenie+listamagnesow[j]->dlugosc)
+				while(protony[i].z>magnesy[j]->polozenie && protony[i].z<magnesy[j]->polozenie+magnesy[j]->dlugosc)
 				{	
 					double E=protony[i].energia;		
 					double Bx=listamagnesow[j]->pole(protony[i].x, protony[i].y);
-					double By=listamagnesow[j]->pole(protony[i].x, protony[i].y);
+					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y);
 					protony[i].px+=dt/E/E*protony[i].pz*By;
 					protony[i].py+=dt/E/E*protony[i].pz*Bx;
 					protony[i].pz+=dt/E/E*(protony[i].px*By-protony[i].py*Bx);
@@ -211,10 +188,80 @@ int main(int argc, char const *argv[])
 
 		cout << "[" << 1000*i/protony.size()/10. << '%' << "]   " << "\r";
 		if(protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
-			zapis << i+1 << "\t" << protony[i].x << "\t" << protony[i].px << "\t" << protony[i].y << "\t" << protony[i].py
-		 	<< "\t" << protony[i].pz << "\t" << protony[i].energia << endl;
+		{
+			std::string zapis;
+			std::stringstream ss(zapis);
+			ss << i+1 << "\t" << protony[i].x << "\t" << protony[i].px << "\t" << protony[i].y << "\t" << protony[i].py
+		 	<< "\t" << protony[i].pz << "\t" << protony[i].energia;
+		 	// cout << ss.str() << endl;
+		 	zapis = ss.str();
+		 	lock(zapis);
+		}
+	}
+}
+
+int main(int argc, char const *argv[])
+{
+	unsigned int rdzenie;
+	rdzenie=std::thread::hardware_concurrency();
+	remove("output");
+
+	if (rdzenie==0) //czyli że nie wykrywa
+	{
+		rdzenie=2;
 	}
 
-	zapis.close();
+	double l=204.0;
+	double r=0.002;
+	std::vector<magnes_ptr> magnes_vec;
+	std::vector<magnes_ptr> magnes_temp;
+
+	if(argc==1){
+		ifstream plik("def_magn",ios::in);
+		magnes_vec = wczytajmagnesy(plik);
+		plik.close();
+	}
+	else 
+		for (int i = 1; i <= argc; i++){
+			ifstream plik(argv[i],ios::in);
+			magnes_temp = wczytajmagnesy(plik);
+			magnes_vec = vappend(magnes_vec, magnes_temp);
+			plik.close();
+		}
+
+	// cout << magnes_vec.size() << endl;
+	// for (int i = 0; i < magnes_vec.size(); i++)
+	// {
+	// 	magnes_vec[i]->kto();
+	// 	cout << i+1 << "\t" << magnes_vec[i]->name << endl;
+	// }
+
+	ifstream plik("input",ios::in);
+	std::vector<proton> proton_vec;
+	proton_vec=wczytajprotony(plik);
+	plik.close();
+
+	// cout << proton_vec.size() << endl;
+
+	std::vector<proton> proton_tab[rdzenie];
+	int I=proton_vec.size()/rdzenie;
+	for(int i = 0; i < rdzenie; i++){
+		std::vector<proton>::const_iterator first = proton_vec.begin()+i*I;
+		std::vector<proton>::const_iterator last = proton_vec.begin()+(i+1)*I;
+		std::vector<proton> proton_temp(first, last);
+		proton_tab[i] = proton_temp;
+	}
+
+	std::thread thr[rdzenie];
+	for (int i = 0; i < rdzenie; i++)
+	{
+		thr[i]=std::thread(oblicz, magnes_vec, proton_tab[i], l, r);
+	}
+
+	for (int i = 0; i < rdzenie; i++)
+	{
+		thr[i].join();
+	}
+
 	return 0;
 }
