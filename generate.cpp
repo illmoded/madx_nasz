@@ -18,7 +18,7 @@ double p, ksi, fi, r, E;
 int main(int argc, char const *argv[])
 {	
 	fstream plik;
-	plik.open("input",fstream::out);
+	plik.open("input.txt",fstream::out);
 	int id=1;
 	if(argc>1) I = atoi(argv[1])+1;
 	srand ((unsigned)time(NULL));

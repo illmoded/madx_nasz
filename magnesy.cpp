@@ -19,7 +19,7 @@ public:
 	double indukcja;
 	int name;
 
-	virtual double pole(double x, double y)
+	virtual double pole(double, double)
 	{
 		return 0;
 	}
@@ -149,7 +149,7 @@ std::mutex blokada;
 void lock(std::string const& msg)
 {
 	blokada.lock();
-    ofstream zapis("output",ios::app);
+    ofstream zapis("output.txt",ios::app);
 
     zapis << msg << endl;
 
@@ -204,7 +204,7 @@ int main(int argc, char const *argv[])
 {
 	unsigned int rdzenie;
 	rdzenie=std::thread::hardware_concurrency();
-	remove("output");
+	remove("output.txt");
 
 	if (rdzenie==0) //czyli że nie wykrywa
 	{
@@ -217,7 +217,7 @@ int main(int argc, char const *argv[])
 	std::vector<magnes_ptr> magnes_temp;
 
 	if(argc==1){
-		ifstream plik("def_magn",ios::in);
+		ifstream plik("def_magn.mag",ios::in);
 		magnes_vec = wczytajmagnesy(plik);
 		plik.close();
 	}
@@ -236,7 +236,7 @@ int main(int argc, char const *argv[])
 	// 	cout << i+1 << "\t" << magnes_vec[i]->name << endl;
 	// }
 
-	ifstream plik("input",ios::in);
+	ifstream plik("input.txt",ios::in);
 	std::vector<proton> proton_vec;
 	proton_vec=wczytajprotony(plik);
 	plik.close();
