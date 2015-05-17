@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <boost/shared_ptr.hpp>
 #include <thread>
 #include <mutex>
 
@@ -13,62 +12,89 @@ using namespace std;
 
 class magnes
 {
-public:
+private:
 	double polozenie;
 	double dlugosc;
 	double indukcja;
-	int name;
 
+public:
 	virtual std::vector<double> pole(double x, double y)
 	{
 		std::vector<double> vec;
 		return vec;
 	}
-	virtual void kto()
+
+	virtual char Kto()
 	{
-		name=0;
+		return 'M';
+	}
+
+	void SetPolozenie(double P)
+	{
+		polozenie = P;
+	}
+
+	double GetPolozenie()
+	{
+		return polozenie;
+	}
+
+	void SetDlugosc(double P)
+	{
+		dlugosc = P;
+	}
+
+	double GetDlugosc()
+	{
+		return dlugosc;
+	}
+
+	void SetIndukcja(double P)
+	{
+		indukcja = P;
+	}
+
+	double GetIndukcja()
+	{
+		return indukcja;
 	}
 };
 
 class dipol:public magnes
 {
 public:
-	virtual std::vector<double> pole(double x, double y);
-	virtual void kto();
+	virtual std::vector<double> pole(double x, double y)
+	{
+		std::vector<double> vec;
+		double I = GetIndukcja();
+		vec.push_back(0);
+		vec.push_back(I);
+		return vec;
+	}
+
+	virtual char Kto()
+	{
+		return 'D';
+	}
 };
 
 class kwadrupol:public magnes
 {
 public:
-	virtual std::vector<double> pole(double x, double y);
-	virtual void kto();
+	virtual std::vector<double> pole(double x, double y)
+	{
+		std::vector<double> vec;
+		double I = GetIndukcja();
+		vec.push_back(I*x);
+		vec.push_back(I*y);
+		return vec;
+	}
+
+	virtual char Kto()
+	{
+		return 'K';
+	}
 };
-
-	std::vector<double> dipol::pole(double x, double y)
-	{
-		std::vector<double> vec;
-		vec.push_back(0);
-		vec.push_back(indukcja);
-		return vec;
-	}
-
-	void dipol::kto()
-	{
-		name=2;
-	}
-
-	std::vector<double> kwadrupol::pole(double x, double y)
-	{
-		std::vector<double> vec;
-		vec.push_back(indukcja*x);
-		vec.push_back(indukcja*y);
-		return vec;
-	}
-
-	void kwadrupol::kto()
-	{
-		name=4;
-	}
 
 class proton
 {
@@ -82,7 +108,7 @@ public:
 	double energia;
 };
 
-typedef boost::shared_ptr<magnes> magnes_ptr;
+typedef std::shared_ptr<magnes> magnes_ptr;
 
 std::vector<proton> wczytajprotony(std::ifstream &plik)
 {
@@ -134,13 +160,13 @@ std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 			j++;
 			continue;
 		}
-		lista[i]->polozenie=a;		/// tu jest coś dziwnego, wszystkim przypisuje dane z ostatniego magnesu danego rodzaju
-		lista[i]->dlugosc=b;		/// może przekazuje jako wsaźnik i przez to wszystkie odnoszą się do jednego?
-		lista[i]->indukcja=c;
+		lista[i]->SetPolozenie(a);
+		lista[i]->SetDlugosc(b);
+		lista[i]->SetIndukcja(c);
 		i++;
 		j++;
 	}
-	return lista;	
+	return lista;
 }
 
 std::vector<magnes_ptr> vappend(std::vector<magnes_ptr> a, std::vector<magnes_ptr> b)
@@ -178,7 +204,7 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 
 			for (int j = 0; j < magnesy.size(); j++)
 			{
-				while(protony[i].z>magnesy[j]->polozenie && protony[i].z<magnesy[j]->polozenie+magnesy[j]->dlugosc)
+				while(protony[i].z>magnesy[j]->GetPolozenie() && protony[i].z<magnesy[j]->GetPolozenie()+magnesy[j]->GetDlugosc())
 				{	
 					double E=protony[i].energia;
 					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y)[0];
@@ -238,8 +264,7 @@ int main(int argc, char const *argv[])
 
 	// cout << magnes_vec.size() << endl;
 	for (int i = 0; i < magnes_vec.size(); i++){
-		// magnes_vec[i]->kto();
-		cout << i+1 << "\t" << magnes_vec[i]->polozenie << "\t" << magnes_vec[i]->dlugosc << "\t" << magnes_vec[i]->indukcja << endl;
+		cout << i+1 << "\t" << magnes_vec[i]->GetPolozenie() << "\t" << magnes_vec[i]->GetDlugosc() << "\t" << magnes_vec[i]->GetIndukcja() << "\t" << magnes_vec[i]->Kto() << endl;
 	}
 
 	ifstream plik("input.txt",ios::in);
