@@ -57,11 +57,11 @@ public:
 		name=2;
 	}
 
-	std::vector<double> kwadrupol::pole(double x, double y)	///dokończyć trzeba
+	std::vector<double> kwadrupol::pole(double x, double y)
 	{
 		std::vector<double> vec;
-		vec.push_back(0);
-		vec.push_back(0);
+		vec.push_back(indukcja*x);
+		vec.push_back(indukcja*y);
 		return vec;
 	}
 
@@ -111,7 +111,7 @@ std::vector<proton> wczytajprotony(std::ifstream &plik)
 std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 {
 	std::vector<magnes_ptr> lista;	
-	double a,b,c,d;
+	double a, b, c, d;
 	magnes_ptr D(new dipol);
 	magnes_ptr K(new kwadrupol);
 
@@ -134,8 +134,8 @@ std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 			j++;
 			continue;
 		}
-		lista[i]->polozenie=a;
-		lista[i]->dlugosc=b;
+		lista[i]->polozenie=a;		/// tu jest coś dziwnego, wszystkim przypisuje dane z ostatniego magnesu danego rodzaju
+		lista[i]->dlugosc=b;		/// może przekazuje jako wsaźnik i przez to wszystkie odnoszą się do jednego?
 		lista[i]->indukcja=c;
 		i++;
 		j++;
@@ -183,7 +183,6 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 					double E=protony[i].energia;
 					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y)[0];
 					double By=magnesy[j]->pole(protony[i].x, protony[i].y)[1];
-					cout << i << "\t" << protony[i].z << "\t" << Bx << "\t" << By << endl;
 					protony[i].px+=dt/E/E*protony[i].pz*By;
 					protony[i].py+=dt/E/E*protony[i].pz*Bx;
 					protony[i].pz+=dt/E/E*(protony[i].px*By-protony[i].py*Bx);
@@ -218,7 +217,6 @@ int main(int argc, char const *argv[])
 	{
 		rdzenie=2;
 	}
-	rdzenie=1;
 
 	double l=204.0;
 	double r=0.002;
@@ -239,11 +237,10 @@ int main(int argc, char const *argv[])
 		}
 
 	// cout << magnes_vec.size() << endl;
-	// for (int i = 0; i < magnes_vec.size(); i++)
-	// {
-	// 	magnes_vec[i]->kto();
-	// 	cout << i+1 << "\t" << magnes_vec[i]->pole(1,1) << endl;
-	// }
+	for (int i = 0; i < magnes_vec.size(); i++){
+		// magnes_vec[i]->kto();
+		cout << i+1 << "\t" << magnes_vec[i]->polozenie << "\t" << magnes_vec[i]->dlugosc << "\t" << magnes_vec[i]->indukcja << endl;
+	}
 
 	ifstream plik("input.txt",ios::in);
 	std::vector<proton> proton_vec;
@@ -251,6 +248,9 @@ int main(int argc, char const *argv[])
 	plik.close();
 
 	// cout << proton_vec.size() << endl;
+	// for (int i = 0; i < proton_vec.size(); i++){
+	// 	cout << i+1 << "\t" << proton_vec[i].energia << endl;
+	// }
 
 	std::vector<proton> proton_tab[rdzenie];
 	int I=proton_vec.size()/rdzenie;
@@ -261,16 +261,16 @@ int main(int argc, char const *argv[])
 		proton_tab[i] = proton_temp;
 	}
 
-	std::thread thr[rdzenie];
-	for (int i = 0; i < rdzenie; i++)
-	{
-		thr[i]=std::thread(oblicz, magnes_vec, proton_tab[i], l, r);
-	}
+	// std::thread thr[rdzenie];
+	// for (int i = 0; i < rdzenie; i++)
+	// {
+	// 	thr[i]=std::thread(oblicz, magnes_vec, proton_tab[i], l, r);
+	// }
 
-	for (int i = 0; i < rdzenie; i++)
-	{
-		thr[i].join();
-	}
+	// for (int i = 0; i < rdzenie; i++)
+	// {
+	// 	thr[i].join();
+	// }
 
 	return 0;
 }
