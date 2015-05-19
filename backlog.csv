@@ -1,8 +1,8 @@
 ID,Kto,Opis,Historia,Uwagi,Szacowany czas,Realny Czas,Priorytet,Stan
 1,user,Założenia,Program oblicza trajektorie cząstek (protonów) do 204 m tunelu.,,,,,
-2,sys/user,Init,"Wartości początkowe są odczytywane z pliku generowanego przez zewnętrzny program (Pythia) lub generowane (niefizycznie, ma służyć do szybkiej prezentacji programu).",Do wyboru powinno być kilka rozkładów statystycznych używanych w hep.,1h,1h,,generowania brak
-2a,user,Init,"Program pozwala na edytowanie warunków początkowych układu, tj. położenia i mocy magnesów leżących wzdłuż toru lotu protonów.","Powinno się to odbywać przez podanie odpowiedniego pliku wsadowego, lub przez wbudowany edytor.",1h,,,
-3,sys,Obliczenia,"Trajektorie cząstek są wyliczane, używając maksymalnej dostępnej mocy obliczeniowej (mpi).",Duża ilość danych wsadowych nie powinna zbytnio wpływać na szybkość startu programu.,2h,3h,W,"prawie,  jeszcze niech funkcje się pojawią"
+2,sys/user,Init,"Wartości początkowe są odczytywane z pliku generowanego przez zewnętrzny program (Pythia) lub generowane (niefizycznie, ma służyć do szybkiej prezentacji programu).",Do wyboru powinno być kilka rozkładów statystycznych używanych w hep.,1h,1h,,na razie jest tylko jednorodny
+2a,user,Init,"Program pozwala na edytowanie warunków początkowych układu, tj. położenia i mocy magnesów leżących wzdłuż toru lotu protonów.","Powinno się to odbywać przez podanie odpowiedniego pliku wsadowego, lub przez wbudowany edytor.",1h,1h,,"jest, ale tylko tekstowo"
+3,sys,Obliczenia,"Trajektorie cząstek są wyliczane, używając maksymalnej dostępnej mocy obliczeniowej (mpi).",Duża ilość danych wsadowych nie powinna zbytnio wpływać na szybkość startu programu.,2h,1.5h,W,gotowe
 3b,,,Dodanie funkcji opisujących relatywistyczne równanie lorentza I funkcje magnesów.,,2h,2h,W,"równania są, ale nie wiem czy dobrze"
 3a,sys/user,Kontynuacja,Mozliwość przerwania czasochłonnych obliczeń/zapis stanu i póżniejsza kontynuacja,,1h,,,
 4,sys,GUI,Program posiada interfejs graficzny (Qt lub wxWidgets) oraz tekstowy.,,20h,,W,50% - graficzna część interfejsu wykonana
