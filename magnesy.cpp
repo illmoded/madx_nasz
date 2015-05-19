@@ -136,16 +136,16 @@ std::vector<proton> wczytajprotony(std::ifstream &plik)
 
 std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 {
-	std::vector<magnes_ptr> lista;	
+	std::vector<magnes_ptr> lista;
 	double a, b, c, d;
-	magnes_ptr D(new dipol);
-	magnes_ptr K(new kwadrupol);
 
 	int i=0;
 	int j=1;
 
 	while(plik >> a >> b >> c >> d)
 	{
+		magnes_ptr D(new dipol);
+		magnes_ptr K(new kwadrupol);
 		if (d==2)
 		{
 			lista.push_back(D);
@@ -186,7 +186,7 @@ void lock(std::string const& msg)
 
     zapis << msg << endl;
 
-	zapis.close();  
+	zapis.close();
     blokada.unlock();
 }
 
@@ -263,9 +263,9 @@ int main(int argc, char const *argv[])
 		}
 
 	// cout << magnes_vec.size() << endl;
-	for (int i = 0; i < magnes_vec.size(); i++){
-		cout << i+1 << "\t" << magnes_vec[i]->GetPolozenie() << "\t" << magnes_vec[i]->GetDlugosc() << "\t" << magnes_vec[i]->GetIndukcja() << "\t" << magnes_vec[i]->Kto() << endl;
-	}
+	// for (int i = 0; i < magnes_vec.size(); i++){
+	// 	cout << i+1 << "\t" << magnes_vec[i]->GetPolozenie() << "\t" << magnes_vec[i]->GetDlugosc() << "\t" << magnes_vec[i]->GetIndukcja() << "\t" << magnes_vec[i]->Kto() << endl;
+	// }
 
 	ifstream plik("input.txt",ios::in);
 	std::vector<proton> proton_vec;
@@ -286,16 +286,16 @@ int main(int argc, char const *argv[])
 		proton_tab[i] = proton_temp;
 	}
 
-	// std::thread thr[rdzenie];
-	// for (int i = 0; i < rdzenie; i++)
-	// {
-	// 	thr[i]=std::thread(oblicz, magnes_vec, proton_tab[i], l, r);
-	// }
+	std::thread thr[rdzenie];
+	for (int i = 0; i < rdzenie; i++)
+	{
+		thr[i]=std::thread(oblicz, magnes_vec, proton_tab[i], l, r);
+	}
 
-	// for (int i = 0; i < rdzenie; i++)
-	// {
-	// 	thr[i].join();
-	// }
+	for (int i = 0; i < rdzenie; i++)
+	{
+		thr[i].join();
+	}
 
 	return 0;
 }
