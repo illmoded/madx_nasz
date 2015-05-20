@@ -66,9 +66,10 @@ public:
 	virtual std::vector<double> pole(double x, double y)
 	{
 		std::vector<double> vec;
+		vec.clear();
 		double I = GetIndukcja();
-		vec.push_back(0);
 		vec.push_back(I);
+		vec.push_back(0);
 		return vec;
 	}
 
@@ -84,9 +85,10 @@ public:
 	virtual std::vector<double> pole(double x, double y)
 	{
 		std::vector<double> vec;
+		vec.clear();
 		double I = GetIndukcja();
-		vec.push_back(I*x);
 		vec.push_back(I*y);
+		vec.push_back(I*x);
 		return vec;
 	}
 
@@ -192,21 +194,21 @@ void lock(std::string const& msg)
 
 void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double l, double r)
 {
+	double Mp = 0.9383;
 	double dt=0.1;
 	for (int i = 0; i < protony.size(); i++)
 	{	
+		double E = protony[i].energia;
 		while(protony[i].z<l && protony[i].x*protony[i].x+protony[i].y*protony[i].y<r*r)
 		{
-			double energiaa=1./protony[i].energia;
-			protony[i].x+=dt*protony[i].px*energiaa;
-			protony[i].y+=dt*protony[i].py*energiaa;
-			protony[i].z+=dt*protony[i].pz*energiaa;
+			protony[i].x+=dt*protony[i].px/E;
+			protony[i].y+=dt*protony[i].py/E;
+			protony[i].z+=dt*protony[i].pz/E;
 
 			for (int j = 0; j < magnesy.size(); j++)
 			{
 				while(protony[i].z>magnesy[j]->GetPolozenie() && protony[i].z<magnesy[j]->GetPolozenie()+magnesy[j]->GetDlugosc())
 				{	
-					double E=protony[i].energia;
 					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y)[0];
 					double By=magnesy[j]->pole(protony[i].x, protony[i].y)[1];
 					protony[i].px+=dt/E/E*protony[i].pz*By;
@@ -215,6 +217,7 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 					protony[i].x+=dt/E*protony[i].px;
 					protony[i].y+=dt/E*protony[i].py;
 					protony[i].z+=dt/E*protony[i].pz;
+					E = sqrt(protony[i].px*protony[i].px+protony[i].py*protony[i].py+protony[i].pz*protony[i].pz+Mp*Mp);
 				}
 			}
 		}
@@ -284,6 +287,7 @@ int main(int argc, char const *argv[])
 		std::vector<proton>::const_iterator last = proton_vec.begin()+(i+1)*I;
 		std::vector<proton> proton_temp(first, last);
 		proton_tab[i] = proton_temp;
+		proton_temp.clear();
 	}
 
 	std::thread thr[rdzenie];
