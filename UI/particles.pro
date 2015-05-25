@@ -14,13 +14,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     widget.cpp \
-    magnets.cpp
+    magnets.cpp \
+    sdialog.cpp \
+    dodaj.cpp
 
 HEADERS  += widget.h \
-    magnets.h
+    magnets.h \
+    sdialog.h \
+    dodaj.h
 
 FORMS    += widget.ui \
     magnets.ui \
-    display.ui
+    display.ui \
+    sdialog.ui \
+    dodaj.ui
 
 QMAKE_LFLAGS    += /INCREMENTAL:NO

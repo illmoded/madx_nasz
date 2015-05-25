@@ -6,6 +6,8 @@
 #include <QFileDialog>
 #include <QItemDelegate>
 #include <QStandardItemModel>
+#include <QTextStream>
+#include <QString>
 
 namespace Ui {
 class Magnets;

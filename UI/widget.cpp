@@ -1,6 +1,8 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include "ui_display.h"
+#include "magnets.h"
+#include "sdialog.h"
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -33,3 +35,10 @@ void Widget::on_BtnBack2_clicked()
 }
 
 
+
+void Widget::on_pushButton_clicked()
+{
+    sDialog dialogs;
+    dialogs.setModal(true);
+    dialogs.exec();
+}

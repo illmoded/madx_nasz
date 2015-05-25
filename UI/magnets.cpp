@@ -1,6 +1,7 @@
 #include "magnets.h"
 #include "ui_magnets.h"
 
+
 Magnets::Magnets(QWidget *parent) :
     QWidget(parent),
     ui2(new Ui::Magnets)
@@ -41,6 +42,19 @@ void Magnets::on_BtnOpen_clicked()
     QString filename = QFileDialog::getOpenFileName(this,tr("Open File"), "",tr("TextFiles (*.txt)"));
     QFile file(filename);
     file.open(QIODevice::ReadWrite);
-    QFile contents = file.readAll();
+    QTextStream in(&file);
+    while (!in.atEnd()){
+        QString line = in.readLine();
+        QStringList fields = line.split(".");
+        QTextStream cout(stdout);
+        cout << line<<endl;
+        //cout << endl;
+    }
+
+    file.close();
+
+  /*  QFile contents = file.readAll();
+    QTextStream cout(stdout);
+    cout << ; */
 }
 
