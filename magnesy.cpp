@@ -145,15 +145,15 @@ std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 	int j=1;
 
 	while(plik >> a >> b >> c >> d)
-	{
-		magnes_ptr D(new dipol);
-		magnes_ptr K(new kwadrupol);
+	{	
 		if (d==2)
 		{
-			lista.push_back(D);
+			magnes_ptr D(new dipol); 	//nie mnożyć bytów ;p
+			lista.push_back(D);			//może nie działać ;p ;p
 		}
 		else if (d==4)
 		{
+			magnes_ptr K(new kwadrupol);
 			lista.push_back(K);
 		}
 		else
