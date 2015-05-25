@@ -11,4 +11,15 @@ dodaj::dodaj(QWidget *parent) :
 dodaj::~dodaj()
 {
     delete ui;
+
+}
+
+void dodaj::on_radioButton_clicked(bool checked)
+{
+    ui->groupBox_2->setDisabled(false);
+}
+
+void dodaj::on_radioButton_2_clicked(bool checked)
+{
+    ui->groupBox_2->setDisabled(true);
 }

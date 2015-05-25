@@ -16,13 +16,16 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     wczytaj.cpp \
-    dodaj.cpp
+    dodaj.cpp \
+    opcjerys.cpp
 
 HEADERS  += \
     wczytaj.h \
     dodaj.h \
-    mainwindow.h
+    mainwindow.h \
+    opcjerys.h
 
 FORMS    += mainwindow.ui \
     wczytaj.ui \
-    dodaj.ui
+    dodaj.ui \
+    opcjerys.ui

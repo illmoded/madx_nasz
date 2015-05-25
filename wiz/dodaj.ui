@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>50</y>
+     <y>30</y>
      <width>113</width>
      <height>23</height>
     </rect>
@@ -43,7 +43,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>110</y>
+     <y>80</y>
      <width>113</width>
      <height>23</height>
     </rect>
@@ -52,8 +52,8 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>170</y>
+     <x>20</x>
+     <y>190</y>
      <width>91</width>
      <height>23</height>
     </rect>
@@ -85,14 +85,14 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>80</y>
+     <x>30</x>
+     <y>110</y>
      <width>71</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Moc</string>
+    <string>Indukcja</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -111,8 +111,8 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>140</y>
+     <x>40</x>
+     <y>160</y>
      <width>59</width>
      <height>15</height>
     </rect>
@@ -122,6 +122,9 @@
    </property>
   </widget>
   <widget class="QGroupBox" name="groupBox">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -131,7 +134,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Typ magnesu</string>
    </property>
    <widget class="QRadioButton" name="radioButton">
     <property name="geometry">
@@ -161,6 +164,9 @@
    </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -170,7 +176,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Rodzaj typ 1</string>
    </property>
    <widget class="QRadioButton" name="radioButton_3">
     <property name="geometry">
@@ -198,6 +204,29 @@
      <string>sku</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>60</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>długość</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>130</y>
+     <width>113</width>
+     <height>23</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>
