@@ -1,10 +1,12 @@
 #include "magnesy.h"
+#include "generate.h"
 
 int main(int argc, char const *argv[])
 {
 	unsigned int rdzenie;
 	rdzenie=std::thread::hardware_concurrency();
 	remove("output.txt");
+	gen(10000);
 
 	if (rdzenie==0) //czyli że nie wykrywa
 	{

@@ -5,7 +5,6 @@
 #include <iostream>
 #include <cstdlib>
 
-
 #ifndef GEN_
 #define GEN_
 
