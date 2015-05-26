@@ -148,8 +148,8 @@ std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 	{	
 		if (d==2)
 		{
-			magnes_ptr D(new dipol); 	//nie mnożyć bytów ;p
-			lista.push_back(D);			//może nie działać ;p ;p
+			magnes_ptr D(new dipol);
+			lista.push_back(D);
 		}
 		else if (d==4)
 		{
