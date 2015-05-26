@@ -15,12 +15,14 @@ const double M=0.9383;
 double pmin=0., ksimin=0., fimin=0.;;
 double p, ksi, fi, r, E;
 
-int main(int argc, char const *argv[])
+void gen(int ilosc)
 {	
+
+
 	fstream plik;
 	plik.open("input.txt",fstream::out);
 	int id=1;
-	if(argc>1) I = atoi(argv[1])+1;
+	I=ilosc;
 	srand ((unsigned)time(NULL));
 
 	for(int i=1; i<I; i++)
