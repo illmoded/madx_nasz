@@ -32,5 +32,6 @@
 *.txt
 
 # QT
+*.user
 *.18
 build-*
