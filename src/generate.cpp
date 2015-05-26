@@ -17,8 +17,6 @@ double p, ksi, fi, r, E;
 
 void gen(int ilosc)
 {	
-
-
 	fstream plik;
 	plik.open("input.txt",fstream::out);
 	int id=1;
@@ -41,6 +39,4 @@ void gen(int ilosc)
 	}
 
     plik.close();
-
-	return 0;
 }

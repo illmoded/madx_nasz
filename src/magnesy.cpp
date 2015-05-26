@@ -2,60 +2,48 @@
 
 using namespace std;
 
-class magnes
-{
-private:
-	double polozenie;
-	double dlugosc;
-	double indukcja;
-
-public:
-	virtual std::vector<double> pole(double x, double y)
+	std::vector<double> magnes::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		return vec;
 	}
 
-	virtual char Kto()
+	char magnes::Kto()
 	{
 		return 'M';
 	}
 
-	void SetPolozenie(double P)
+	void magnes::SetPolozenie(double P)
 	{
 		polozenie = P;
 	}
 
-	double GetPolozenie()
+	double magnes::GetPolozenie()
 	{
 		return polozenie;
 	}
 
-	void SetDlugosc(double P)
+	void magnes::SetDlugosc(double P)
 	{
 		dlugosc = P;
 	}
 
-	double GetDlugosc()
+	double magnes::GetDlugosc()
 	{
 		return dlugosc;
 	}
 
-	void SetIndukcja(double P)
+	void magnes::SetIndukcja(double P)
 	{
 		indukcja = P;
 	}
 
-	double GetIndukcja()
+	double magnes::GetIndukcja()
 	{
 		return indukcja;
 	}
-};
 
-class dipol:public magnes
-{
-public:
-	virtual std::vector<double> pole(double x, double y)
+	std::vector<double> dipol::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		vec.clear();
@@ -65,16 +53,12 @@ public:
 		return vec;
 	}
 
-	virtual char Kto()
+	char dipol::Kto()
 	{
 		return 'D';
 	}
-};
 
-class kwadrupol:public magnes
-{
-public:
-	virtual std::vector<double> pole(double x, double y)
+	std::vector<double> kwadrupol::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		vec.clear();
@@ -84,23 +68,10 @@ public:
 		return vec;
 	}
 
-	virtual char Kto()
+	char kwadrupol::Kto()
 	{
 		return 'K';
 	}
-};
-
-class proton
-{
-public:
-	double x;
-	double y;
-	double z;
-	double px;
-	double py;
-	double pz;
-	double energia;
-};
 
 typedef std::shared_ptr<magnes> magnes_ptr;
 

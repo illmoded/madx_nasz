@@ -22,6 +22,7 @@ private:
 
 public:
 	virtual std::vector<double> pole(double x, double y);
+	virtual char Kto();
 	void SetPolozenie(double P);
 	double GetPolozenie();
 	void SetDlugosc(double P);
