@@ -1,6 +1,7 @@
 #include "wczytaj.h"
 #include "ui_wczytaj.h"
 #include "dodaj.h"
+#include "QToolTip"
 
 
 
@@ -9,6 +10,11 @@ wczytaj::wczytaj(QWidget *parent) :
     ui(new Ui::wczytaj)
 {
     ui->setupUi(this);
+    ui->pushButton->setToolTip("teraz czytasz opcje do przycisku wczytaj");
+    ui->pushButton_2->setToolTip("teraz czytasz opcje do przycisku dodaj");
+    ui->pushButton_3->setToolTip("teraz czytasz opcje do przycisku zapisz");
+    ui->pushButton_4->setToolTip("teraz czytasz opcje do przycisku czysc");
+    ui->pushButton_5->setToolTip("teraz czytasz opcje do przycisku wyjscie");
 }
 
 wczytaj::~wczytaj()
