@@ -30,3 +30,7 @@
 
 # Text files
 *.txt
+
+# QT
+*.18
+build-*
