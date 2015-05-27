@@ -1,69 +1,49 @@
-#include <vector>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <thread>
-#include <mutex>
+#include "magnesy.h"
 
 using namespace std;
 
-class magnes
-{
-private:
-	double polozenie;
-	double dlugosc;
-	double indukcja;
-
-public:
-	virtual std::vector<double> pole(double x, double y)
+	std::vector<double> magnes::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		return vec;
 	}
 
-	virtual char Kto()
+	char magnes::Kto()
 	{
 		return 'M';
 	}
 
-	void SetPolozenie(double P)
+	void magnes::SetPolozenie(double P)
 	{
 		polozenie = P;
 	}
 
-	double GetPolozenie()
+	double magnes::GetPolozenie()
 	{
 		return polozenie;
 	}
 
-	void SetDlugosc(double P)
+	void magnes::SetDlugosc(double P)
 	{
 		dlugosc = P;
 	}
 
-	double GetDlugosc()
+	double magnes::GetDlugosc()
 	{
 		return dlugosc;
 	}
 
-	void SetIndukcja(double P)
+	void magnes::SetIndukcja(double P)
 	{
 		indukcja = P;
 	}
 
-	double GetIndukcja()
+	double magnes::GetIndukcja()
 	{
 		return indukcja;
 	}
-};
 
-class dipol:public magnes
-{
-public:
-	virtual std::vector<double> pole(double x, double y)
+	std::vector<double> dipol::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		vec.clear();
@@ -73,16 +53,12 @@ public:
 		return vec;
 	}
 
-	virtual char Kto()
+	char dipol::Kto()
 	{
 		return 'D';
 	}
-};
 
-class kwadrupol:public magnes
-{
-public:
-	virtual std::vector<double> pole(double x, double y)
+	std::vector<double> kwadrupol::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		vec.clear();
@@ -92,23 +68,10 @@ public:
 		return vec;
 	}
 
-	virtual char Kto()
+	char kwadrupol::Kto()
 	{
 		return 'K';
 	}
-};
-
-class proton
-{
-public:
-	double x;
-	double y;
-	double z;
-	double px;
-	double py;
-	double pz;
-	double energia;
-};
 
 typedef std::shared_ptr<magnes> magnes_ptr;
 
@@ -136,7 +99,7 @@ std::vector<proton> wczytajprotony(std::ifstream &plik)
 	return listap;
 }
 
-std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
+std::vector<magnes_ptr> wczytajmagnesy(ifstream &plik)
 {
 	std::vector<magnes_ptr> lista;
 	double a, b, c, d;
@@ -145,15 +108,15 @@ std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 	int j=1;
 
 	while(plik >> a >> b >> c >> d)
-	{
-		magnes_ptr D(new dipol);
-		magnes_ptr K(new kwadrupol);
+	{	
 		if (d==2)
 		{
+			magnes_ptr D(new dipol);
 			lista.push_back(D);
 		}
 		else if (d==4)
 		{
+			magnes_ptr K(new kwadrupol);
 			lista.push_back(K);
 		}
 		else
@@ -236,70 +199,10 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 	}
 }
 
-int main(int argc, char const *argv[])
+void wypiszmagnesy(std::vector<magnes_ptr> magnes_vec)
 {
-	unsigned int rdzenie;
-	rdzenie=std::thread::hardware_concurrency();
-	remove("output.txt");
-
-	if (rdzenie==0) //czyli że nie wykrywa
-	{
-		rdzenie=2;
-	}
-
-	double l=204.0;
-	double r=0.002;
-	std::vector<magnes_ptr> magnes_vec;
-	std::vector<magnes_ptr> magnes_temp;
-
-	if(argc==1){
-		ifstream plik("def_magn.mag",ios::in);
-		magnes_vec = wczytajmagnesy(plik);
-		plik.close();
-	}
-	else 
-		for (int i = 1; i <= argc; i++){
-			ifstream plik(argv[i],ios::in);
-			magnes_temp = wczytajmagnesy(plik);
-			magnes_vec = vappend(magnes_vec, magnes_temp);
-			plik.close();
-		}
-
-	// cout << magnes_vec.size() << endl;
-	// for (int i = 0; i < magnes_vec.size(); i++){
-	// 	cout << i+1 << "\t" << magnes_vec[i]->GetPolozenie() << "\t" << magnes_vec[i]->GetDlugosc() << "\t" << magnes_vec[i]->GetIndukcja() << "\t" << magnes_vec[i]->Kto() << endl;
-	// }
-
-	ifstream plik("input.txt",ios::in);
-	std::vector<proton> proton_vec;
-	proton_vec=wczytajprotony(plik);
-	plik.close();
-
-	// cout << proton_vec.size() << endl;
-	// for (int i = 0; i < proton_vec.size(); i++){
-	// 	cout << i+1 << "\t" << proton_vec[i].energia << endl;
-	// }
-
-	std::vector<proton> proton_tab[rdzenie];
-	int I=proton_vec.size()/rdzenie;
-	for(int i = 0; i < rdzenie; i++){
-		std::vector<proton>::const_iterator first = proton_vec.begin()+i*I;
-		std::vector<proton>::const_iterator last = proton_vec.begin()+(i+1)*I;
-		std::vector<proton> proton_temp(first, last);
-		proton_tab[i] = proton_temp;
-		proton_temp.clear();
-	}
-
-	std::thread thr[rdzenie];
-	for (int i = 0; i < rdzenie; i++)
-	{
-		thr[i]=std::thread(oblicz, magnes_vec, proton_tab[i], l, r);
-	}
-
-	for (int i = 0; i < rdzenie; i++)
-	{
-		thr[i].join();
-	}
-
-	return 0;
+    cout << "Liczba wczytanych magnesów: " << magnes_vec.size() << endl;
+    for (int i = 0; i < magnes_vec.size(); i++){
+        cout << i+1 << "\t" << magnes_vec[i]->GetPolozenie() << "\t" << magnes_vec[i]->GetDlugosc() << "\t" << magnes_vec[i]->GetIndukcja() << "\t" << magnes_vec[i]->Kto() << endl;
+    }
 }

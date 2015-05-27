@@ -17,13 +17,18 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     wczytaj.cpp \
     dodaj.cpp \
-    opcjerys.cpp
+    opcjerys.cpp \
+    generate.cpp \
+    magnesy.cpp \
+    mainmagnesy.cpp
 
 HEADERS  += \
     wczytaj.h \
     dodaj.h \
     mainwindow.h \
-    opcjerys.h
+    opcjerys.h \
+    generate.h \
+    magnesy.h
 
 FORMS    += mainwindow.ui \
     wczytaj.ui \
