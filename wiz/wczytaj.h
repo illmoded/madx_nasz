@@ -9,6 +9,7 @@
 #include <QStandardItemModel>
 #include <QTextStream>
 #include <QString>
+#include "magnesy.h"
 
 namespace Ui {
 class wczytaj;

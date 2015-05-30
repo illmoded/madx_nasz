@@ -16,7 +16,6 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     wczytaj.cpp \
-    dodaj.cpp \
     opcjerys.cpp \
     generate.cpp \
     magnesy.cpp \
@@ -24,7 +23,6 @@ SOURCES += main.cpp\
 
 HEADERS  += \
     wczytaj.h \
-    dodaj.h \
     mainwindow.h \
     opcjerys.h \
     generate.h \
@@ -33,5 +31,4 @@ HEADERS  += \
 
 FORMS    += mainwindow.ui \
     wczytaj.ui \
-    dodaj.ui \
     opcjerys.ui

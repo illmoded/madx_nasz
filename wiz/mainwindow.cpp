@@ -37,7 +37,6 @@ void MainWindow::on_pushButton_clicked() // Rysuj
 
 void MainWindow::on_pushButton_3_clicked() // Wyjdź
 {
-    wypiszmagnesy(magnes_vec);
     this->close();
 }
 
