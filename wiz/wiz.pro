@@ -20,7 +20,7 @@ SOURCES += main.cpp\
     opcjerys.cpp \
     generate.cpp \
     magnesy.cpp \
-    mainmagnesy.cpp
+    global.cpp
 
 HEADERS  += \
     wczytaj.h \
@@ -28,7 +28,8 @@ HEADERS  += \
     mainwindow.h \
     opcjerys.h \
     generate.h \
-    magnesy.h
+    magnesy.h \
+    global.h
 
 FORMS    += mainwindow.ui \
     wczytaj.ui \

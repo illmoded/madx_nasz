@@ -1,3 +1,6 @@
+#ifndef MAGNESY_
+#define MAGNESY_
+
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,9 +11,6 @@
 #include <thread>
 #include <mutex>
 #include "QToolTip"
-
-#ifndef MAGNESY_
-#define MAGNESY_
 
 using namespace std;
 
@@ -62,11 +62,12 @@ typedef std::shared_ptr<magnes> magnes_ptr;
 
 std::vector<proton> wczytajprotony(std::ifstream &plik);
 std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik);
+std::vector<magnes_ptr> wczytajjeden(double l, double d, double i, double m);
 std::vector<magnes_ptr> vappend(std::vector<magnes_ptr> a, std::vector<magnes_ptr> b);
 
 
 void lock(std::string const& msg);
 void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double l, double r);
-void wypiszmagnesy(std::vector<magnes_ptr> magnes_vec);
+void wypiszmagnesy(std::vector<magnes_ptr> magnes);
 
 #endif

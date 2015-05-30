@@ -20,6 +20,12 @@ private slots:
 
     void on_radioButton_2_clicked(bool checked);
 
+    void on_BTNappend_clicked();
+
+    void on_BTNsave_clicked();
+
+    void on_BTNdiscard_clicked();
+
 private:
     Ui::dodaj *ui;
 };

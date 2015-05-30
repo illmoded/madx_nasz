@@ -134,6 +134,30 @@ std::vector<magnes_ptr> wczytajmagnesy(ifstream &plik)
 	return lista;
 }
 
+std::vector<magnes_ptr> wczytajjeden(double l, double d, double i, double m)
+{
+    std::vector<magnes_ptr> lista;
+    if (m==2)
+    {
+        magnes_ptr D(new dipol);
+        lista.push_back(D);
+        lista[0]->SetPolozenie(l);
+        lista[0]->SetDlugosc(d);
+        lista[0]->SetIndukcja(i);
+    }
+    else if (m==4)
+    {
+        magnes_ptr K(new kwadrupol);
+        lista.push_back(K);
+        lista[0]->SetPolozenie(l);
+        lista[0]->SetDlugosc(d);
+        lista[0]->SetIndukcja(i);
+    }
+    else cout << "Błąd" << endl;
+
+    return lista;
+}
+
 std::vector<magnes_ptr> vappend(std::vector<magnes_ptr> a, std::vector<magnes_ptr> b)
 {
 	a.reserve(a.size() + b.size());
@@ -199,10 +223,10 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 	}
 }
 
-void wypiszmagnesy(std::vector<magnes_ptr> magnes_vec)
+void wypiszmagnesy(std::vector<magnes_ptr> magnes)
 {
-    cout << "Liczba wczytanych magnesów: " << magnes_vec.size() << endl;
-    for (int i = 0; i < magnes_vec.size(); i++){
-        cout << i+1 << "\t" << magnes_vec[i]->GetPolozenie() << "\t" << magnes_vec[i]->GetDlugosc() << "\t" << magnes_vec[i]->GetIndukcja() << "\t" << magnes_vec[i]->Kto() << endl;
+    cout << "Liczba wczytanych magnesów: " << magnes.size() << endl;
+    for (int i = 0; i < magnes.size(); i++){
+        cout << i+1 << "\t" << magnes[i]->GetPolozenie() << "\t" << magnes[i]->GetDlugosc() << "\t" << magnes[i]->GetIndukcja() << "\t" << magnes[i]->Kto() << endl;
     }
 }
