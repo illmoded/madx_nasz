@@ -6,7 +6,7 @@ const double pmax=3.;
 const double ksimax=.2;
 const double fimax=2*M_PI;
 const double M=0.9383;
-double pmin=0., ksimin=0., fimin=0.;;
+double pmin=0., ksimin=0., fimin=0.;
 double p, ksi, fi, r, E;
 
 void gen(int ilosc)

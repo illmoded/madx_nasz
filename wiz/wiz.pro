@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     opcjerys.cpp \
     generate.cpp \
     magnesy.cpp \
-    global.cpp
+    global.cpp \
+    liczenie.cpp
 
 HEADERS  += \
     wczytaj.h \
@@ -27,8 +28,10 @@ HEADERS  += \
     opcjerys.h \
     generate.h \
     magnesy.h \
-    global.h
+    global.h \
+    liczenie.h
 
 FORMS    += mainwindow.ui \
     wczytaj.ui \
-    opcjerys.ui
+    opcjerys.ui \
+    liczenie.ui

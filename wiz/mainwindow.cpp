@@ -4,6 +4,7 @@
 #include "opcjerys.h"
 #include "QAction"
 #include "global.h"
+#include "liczenie.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,5 +43,7 @@ void MainWindow::on_pushButton_3_clicked() // Wyjdź
 
 void MainWindow::on_pushButton_2_clicked() // Licz
 {
-
+    liczenie licz;
+    licz.setModal(true);
+    licz.exec();
 }

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
+    <width>572</width>
     <height>343</height>
    </rect>
   </property>
@@ -38,14 +38,14 @@
     <string/>
    </property>
    <property name="text">
-    <string>Przeglądaj</string>
+    <string>Dodaj z pliku</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
      <x>480</x>
-     <y>80</y>
+     <y>50</y>
      <width>80</width>
      <height>23</height>
     </rect>
@@ -97,7 +97,7 @@
    <property name="geometry">
     <rect>
      <x>480</x>
-     <y>50</y>
+     <y>80</y>
      <width>80</width>
      <height>23</height>
     </rect>
@@ -135,6 +135,19 @@
      <string>Rodzaj</string>
     </property>
    </column>
+  </widget>
+  <widget class="QPushButton" name="BTNrevert">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>220</y>
+     <width>80</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Przywróć</string>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -36,6 +36,8 @@ private slots:
 
     void on_BTNshow_clicked();
 
+    void on_BTNrevert_clicked();
+
 private:
     Ui::wczytaj *ui;
 };

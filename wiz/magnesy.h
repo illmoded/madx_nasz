@@ -10,7 +10,6 @@
 #include <sstream>
 #include <thread>
 #include <mutex>
-#include "QToolTip"
 
 using namespace std;
 

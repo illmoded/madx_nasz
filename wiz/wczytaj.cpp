@@ -28,7 +28,6 @@ wczytaj::~wczytaj()
 
 void wczytaj::on_pushButton_5_clicked() // wyjście
 {
-    magnes_vec.size();
     this->close();
 }
 
@@ -105,4 +104,11 @@ void wczytaj::on_BTNshow_clicked() // wypisz magnesy zapisane
         ui->tableWidget->setItem(i,3,item4);
     }
     ui->tableWidget->sortItems(0);
+}
+
+void wczytaj::on_BTNrevert_clicked()
+{
+    magnes_load.clear();
+    magnes_load=magnes_vec;
+    wczytaj::on_BTNshow_clicked();
 }
