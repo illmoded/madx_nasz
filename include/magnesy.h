@@ -1,3 +1,6 @@
+#ifndef MAGNESY_
+#define MAGNESY_
+
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,9 +10,6 @@
 #include <sstream>
 #include <thread>
 #include <mutex>
-
-#ifndef MAGNESY_
-#define MAGNESY_
 
 using namespace std;
 
@@ -22,7 +22,7 @@ private:
 
 public:
 	virtual std::vector<double> pole(double x, double y);
-	virtual char Kto();
+	virtual std::string Kto();
 	void SetPolozenie(double P);
 	double GetPolozenie();
 	void SetDlugosc(double P);
@@ -35,14 +35,21 @@ class dipol:public magnes
 {
 public:
 	virtual std::vector<double> pole(double x, double y);
-	virtual char Kto();
+	virtual std::string Kto();
 };
 
-class kwadrupol:public magnes
+class kwadrupolX:public magnes
 {
 public:
 	virtual std::vector<double> pole(double x, double y);
-	virtual char Kto();
+	virtual std::string Kto();
+};
+
+class kwadrupolY:public magnes
+{
+public:
+	virtual std::vector<double> pole(double x, double y);
+	virtual std::string Kto();
 };
 
 class proton

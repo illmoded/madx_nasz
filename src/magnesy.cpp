@@ -8,9 +8,9 @@ using namespace std;
 		return vec;
 	}
 
-	char magnes::Kto()
+	std::string magnes::Kto()
 	{
-		return 'M';
+		return "M";
 	}
 
 	void magnes::SetPolozenie(double P)
@@ -53,12 +53,12 @@ using namespace std;
 		return vec;
 	}
 
-	char dipol::Kto()
+	std::string dipol::Kto()
 	{
-		return 'D';
+		return "D";
 	}
 
-	std::vector<double> kwadrupol::pole(double x, double y)
+	std::vector<double> kwadrupolX::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		vec.clear();
@@ -68,9 +68,24 @@ using namespace std;
 		return vec;
 	}
 
-	char kwadrupol::Kto()
+	std::string kwadrupolX::Kto()
 	{
-		return 'K';
+		return "KX";
+	}
+
+	std::vector<double> kwadrupolY::pole(double x, double y)
+	{
+		std::vector<double> vec;
+		vec.clear();
+		double I = GetIndukcja();
+		vec.push_back(I*y);
+		vec.push_back(I*x);
+		return vec;
+	}
+
+	std::string kwadrupolY::Kto()
+	{
+		return "KY";
 	}
 
 typedef std::shared_ptr<magnes> magnes_ptr;
@@ -102,22 +117,28 @@ std::vector<proton> wczytajprotony(std::ifstream &plik)
 std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 {
 	std::vector<magnes_ptr> lista;
-	double a, b, c, d;
+	double a, b, c;
+	std::string d;
 
 	int i=0;
 	int j=1;
 
 	while(plik >> a >> b >> c >> d)
 	{	
-		if (d==2)
+		if (d=="D")
 		{
 			magnes_ptr D(new dipol);
 			lista.push_back(D);
 		}
-		else if (d==4)
+		else if (d=="KX")
 		{
-			magnes_ptr K(new kwadrupol);
-			lista.push_back(K);
+			magnes_ptr KX(new kwadrupolX);
+			lista.push_back(KX);
+		}
+		else if (d=="KY")
+		{
+			magnes_ptr KY(new kwadrupolY);
+			lista.push_back(KY);
 		}
 		else
 		{
