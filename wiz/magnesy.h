@@ -22,7 +22,7 @@ private:
 
 public:
 	virtual std::vector<double> pole(double x, double y);
-	virtual char Kto();
+    virtual std::string Kto();
 	void SetPolozenie(double P);
 	double GetPolozenie();
 	void SetDlugosc(double P);
@@ -35,14 +35,21 @@ class dipol:public magnes
 {
 public:
 	virtual std::vector<double> pole(double x, double y);
-	virtual char Kto();
+    virtual std::string Kto();
 };
 
-class kwadrupol:public magnes
+class kwadrupolX:public magnes
 {
 public:
 	virtual std::vector<double> pole(double x, double y);
-	virtual char Kto();
+    virtual std::string Kto();
+};
+
+class kwadrupolY:public magnes
+{
+public:
+    virtual std::vector<double> pole(double x, double y);
+    virtual std::string Kto();
 };
 
 class proton
@@ -61,7 +68,7 @@ typedef std::shared_ptr<magnes> magnes_ptr;
 
 std::vector<proton> wczytajprotony(std::ifstream &plik);
 std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik);
-std::vector<magnes_ptr> wczytajjeden(double l, double d, double i, double m);
+std::vector<magnes_ptr> wczytajjeden(double l, double d, double i, std::string m);
 std::vector<magnes_ptr> vappend(std::vector<magnes_ptr> a, std::vector<magnes_ptr> b);
 
 

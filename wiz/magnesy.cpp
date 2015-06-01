@@ -8,9 +8,9 @@ using namespace std;
 		return vec;
 	}
 
-	char magnes::Kto()
+    std::string magnes::Kto()
 	{
-		return 'M';
+        return "M";
 	}
 
 	void magnes::SetPolozenie(double P)
@@ -53,12 +53,12 @@ using namespace std;
 		return vec;
 	}
 
-	char dipol::Kto()
+    std::string dipol::Kto()
 	{
-		return 'D';
+        return "D";
 	}
 
-	std::vector<double> kwadrupol::pole(double x, double y)
+    std::vector<double> kwadrupolX::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		vec.clear();
@@ -68,10 +68,25 @@ using namespace std;
 		return vec;
 	}
 
-	char kwadrupol::Kto()
+    std::string kwadrupolX::Kto()
 	{
-		return 'K';
+        return "KX";
 	}
+
+    std::vector<double> kwadrupolY::pole(double x, double y)
+    {
+        std::vector<double> vec;
+        vec.clear();
+        double I = GetIndukcja();
+        vec.push_back(I*y);
+        vec.push_back(I*x);
+        return vec;
+    }
+
+    std::string kwadrupolY::Kto()
+    {
+        return "KY";
+    }
 
 typedef std::shared_ptr<magnes> magnes_ptr;
 
@@ -99,45 +114,51 @@ std::vector<proton> wczytajprotony(std::ifstream &plik)
 	return listap;
 }
 
-std::vector<magnes_ptr> wczytajmagnesy(ifstream &plik)
-{
-	std::vector<magnes_ptr> lista;
-	double a, b, c, d;
-
-	int i=0;
-	int j=1;
-
-	while(plik >> a >> b >> c >> d)
-	{	
-		if (d==2)
-		{
-			magnes_ptr D(new dipol);
-			lista.push_back(D);
-		}
-		else if (d==4)
-		{
-			magnes_ptr K(new kwadrupol);
-			lista.push_back(K);
-		}
-		else
-		{
-			cout << "Błąd w " << j << " magnesie. Czy to dipol czy kwadrupol? Oto jest pytanie." << endl << "Hehe" << endl;
-			j++;
-			continue;
-		}
-		lista[i]->SetPolozenie(a);
-		lista[i]->SetDlugosc(b);
-		lista[i]->SetIndukcja(c);
-		i++;
-		j++;
-	}
-	return lista;
-}
-
-std::vector<magnes_ptr> wczytajjeden(double l, double d, double i, double m)
+std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 {
     std::vector<magnes_ptr> lista;
-    if (m==2)
+    double a, b, c;
+    std::string d;
+
+    int i=0;
+    int j=1;
+
+    while(plik >> a >> b >> c >> d)
+    {
+        if (d=="D")
+        {
+            magnes_ptr D(new dipol);
+            lista.push_back(D);
+        }
+        else if (d=="KX")
+        {
+            magnes_ptr KX(new kwadrupolX);
+            lista.push_back(KX);
+        }
+        else if (d=="KY")
+        {
+            magnes_ptr KY(new kwadrupolY);
+            lista.push_back(KY);
+        }
+        else
+        {
+            cout << "Błąd w " << j << " magnesie. Czy to dipol czy kwadrupol? Oto jest pytanie." << endl << "Hehe" << endl;
+            j++;
+            continue;
+        }
+        lista[i]->SetPolozenie(a);
+        lista[i]->SetDlugosc(b);
+        lista[i]->SetIndukcja(c);
+        i++;
+        j++;
+    }
+    return lista;
+}
+
+std::vector<magnes_ptr> wczytajjeden(double l, double d, double i, std::string m)
+{
+    std::vector<magnes_ptr> lista;
+    if (m=="D")
     {
         magnes_ptr D(new dipol);
         lista.push_back(D);
@@ -145,10 +166,18 @@ std::vector<magnes_ptr> wczytajjeden(double l, double d, double i, double m)
         lista[0]->SetDlugosc(d);
         lista[0]->SetIndukcja(i);
     }
-    else if (m==4)
+    else if (m=="KX")
     {
-        magnes_ptr K(new kwadrupol);
-        lista.push_back(K);
+        magnes_ptr KX(new kwadrupolX);
+        lista.push_back(KX);
+        lista[0]->SetPolozenie(l);
+        lista[0]->SetDlugosc(d);
+        lista[0]->SetIndukcja(i);
+    }
+    else if (m=="KY")
+    {
+        magnes_ptr KY(new kwadrupolY);
+        lista.push_back(KY);
         lista[0]->SetPolozenie(l);
         lista[0]->SetDlugosc(d);
         lista[0]->SetIndukcja(i);

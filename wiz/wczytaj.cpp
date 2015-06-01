@@ -63,14 +63,14 @@ void wczytaj::on_pushButton_4_clicked() // czyszczenie wszystkich
 void wczytaj::on_pushButton_3_clicked() // zapis
 {
     magnes_load.clear();
-    double pol, dl, in, m;
+    double pol, dl, in;
+    std::string m;
     for(int i=0; i<ui->tableWidget->rowCount(); i++){
         pol=ui->tableWidget->item(i,0)->text().toDouble();
         dl=ui->tableWidget->item(i,1)->text().toDouble();
         in=ui->tableWidget->item(i,2)->text().toDouble();
-        if(ui->tableWidget->item(i,3)->text()=="D") m=2;
-        if(ui->tableWidget->item(i,3)->text()=="K") m=4;
-        if(m==2 || m==4){
+        m=ui->tableWidget->item(i,3)->text().toUtf8().constData();
+        if(m=="D" || m=="KX" || m=="KY"){
             magnes_temp=wczytajjeden(pol, dl, in, m);
             magnes_load=vappend(magnes_load,magnes_temp);
             magnes_temp.clear();
@@ -100,7 +100,8 @@ void wczytaj::on_BTNshow_clicked() // wypisz magnesy zapisane
         QTableWidgetItem *item3 = new QTableWidgetItem;
         item3->setData(Qt::EditRole, magnes_load[i]->GetIndukcja());
         ui->tableWidget->setItem(i,2,item3);
-        QTableWidgetItem *item4 = new QTableWidgetItem(QString("%1").arg(magnes_load[i]->Kto()));
+        QTableWidgetItem *item4 = new QTableWidgetItem;
+        item4->setText(QString::fromStdString(magnes_load[i]->Kto()));
         ui->tableWidget->setItem(i,3,item4);
     }
     ui->tableWidget->sortItems(0);
