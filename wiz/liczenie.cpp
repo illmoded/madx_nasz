@@ -82,7 +82,7 @@ void liczenie::pokaz_magnesy()
         QTableWidgetItem *item3 = new QTableWidgetItem;
         item3->setData(Qt::EditRole, magnes_vec[i]->GetIndukcja());
         ui->tableWidget->setItem(i,2,item3);
-        QTableWidgetItem *item4 = new QTableWidgetItem(QString("%1").arg(magnes_vec[i]->Kto()));
+        QTableWidgetItem *item4 = new QTableWidgetItem(QString::fromStdString(magnes_vec[i]->Kto()));
         ui->tableWidget->setItem(i,3,item4);
     }
     ui->tableWidget->sortItems(0);

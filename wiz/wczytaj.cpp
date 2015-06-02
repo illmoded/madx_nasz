@@ -51,6 +51,18 @@ void wczytaj::on_pushButton_2_clicked() //dodanie pojedynczego
     wczytaj::on_BTNshow_clicked();
     int i=ui->tableWidget->rowCount();
     ui->tableWidget->insertRow(i);
+
+    QTableWidgetItem *item1 = new QTableWidgetItem;
+    item1->setData(Qt::EditRole, 0);
+    ui->tableWidget->setItem(i,0,item1);
+    QTableWidgetItem *item2 = new QTableWidgetItem;
+    item2->setData(Qt::EditRole, 0);
+    ui->tableWidget->setItem(i,1,item2);
+    QTableWidgetItem *item3 = new QTableWidgetItem;
+    item3->setData(Qt::EditRole, 0);
+    ui->tableWidget->setItem(i,2,item3);
+    QTableWidgetItem *item4 = new QTableWidgetItem(QString::fromStdString("M"));
+    ui->tableWidget->setItem(i,3,item4);
 }
 
 void wczytaj::on_pushButton_4_clicked() // czyszczenie wszystkich
@@ -70,7 +82,7 @@ void wczytaj::on_pushButton_3_clicked() // zapis
         dl=ui->tableWidget->item(i,1)->text().toDouble();
         in=ui->tableWidget->item(i,2)->text().toDouble();
         m=ui->tableWidget->item(i,3)->text().toUtf8().constData();
-        if(m=="D" || m=="KX" || m=="KY"){
+        if((m=="D" || m=="KX" || m=="KY") && (dl!=0 || in!=0)){
             magnes_temp=wczytajjeden(pol, dl, in, m);
             magnes_load=vappend(magnes_load,magnes_temp);
             magnes_temp.clear();
