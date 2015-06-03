@@ -37,9 +37,11 @@ void liczenie::on_BTNcompute_clicked()
     }
 
     remove("output.txt");
-    ifstream plik("input.txt",ios::in);
-    proton_vec=wczytajprotony(plik);
-    plik.close();
+    if(proton_vec.size()==0){
+        ifstream plik("input.txt",ios::in);
+        proton_vec=wczytajprotony(plik);
+        plik.close();
+    }
 
     std::vector<proton> proton_tab[rdzenie];
     int I=proton_vec.size()/rdzenie;
@@ -61,6 +63,13 @@ void liczenie::on_BTNcompute_clicked()
     {
         thr[i].join();
     }
+
+    QMessageBox msgBox;
+    msgBox.setText("Gotowe");
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.exec();
 }
 
 void liczenie::pokaz_magnesy()

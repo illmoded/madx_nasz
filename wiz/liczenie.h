@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QMessageBox>
 
 namespace Ui {
 class liczenie;

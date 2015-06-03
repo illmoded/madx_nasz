@@ -21,7 +21,7 @@ private:
 	double indukcja;
 
 public:
-	virtual std::vector<double> pole(double x, double y);
+    virtual std::vector<double> pole(double x, double y);
     virtual std::string Kto();
 	void SetPolozenie(double P);
 	double GetPolozenie();

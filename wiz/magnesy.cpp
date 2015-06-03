@@ -2,7 +2,7 @@
 
 using namespace std;
 
-	std::vector<double> magnes::pole(double x, double y)
+    std::vector<double> magnes::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		return vec;
@@ -63,7 +63,7 @@ using namespace std;
 		std::vector<double> vec;
 		vec.clear();
 		double I = GetIndukcja();
-		vec.push_back(I*y);
+        vec.push_back(-I*y);
 		vec.push_back(I*x);
 		return vec;
 	}
@@ -79,7 +79,7 @@ using namespace std;
         vec.clear();
         double I = GetIndukcja();
         vec.push_back(I*y);
-        vec.push_back(I*x);
+        vec.push_back(-I*x);
         return vec;
     }
 
@@ -224,7 +224,8 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 			for (int j = 0; j < magnesy.size(); j++)
 			{
 				while(protony[i].z>magnesy[j]->GetPolozenie() && protony[i].z<magnesy[j]->GetPolozenie()+magnesy[j]->GetDlugosc())
-				{	
+                {
+                    dt=0.05;
 					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y)[0];
 					double By=magnesy[j]->pole(protony[i].x, protony[i].y)[1];
 					protony[i].px+=dt/E/E*protony[i].pz*By;
@@ -235,6 +236,7 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
 					protony[i].z+=dt/E*protony[i].pz;
 					E = sqrt(protony[i].px*protony[i].px+protony[i].py*protony[i].py+protony[i].pz*protony[i].pz+Mp*Mp);
 				}
+                dt=0.1;
 			}
 		}
 

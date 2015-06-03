@@ -27,7 +27,7 @@ void gen(int ilosc)
 		fi = fimin + (fimax-fimin)*r;
 
 		E=E0*(1-ksi);
-		plik << 0 << "\t" << 0 << "\t" << 0 << "\t" << p*cos(fi) << "\t" << p*sin(fi) << "\t" << sqrt(E*E-M*M) << "\t" << E << endl;
+		plik << 0 << "\t" << 0 << "\t" << 0 << "\t" << p*cos(fi) << "\t" << p*sin(fi)+142.5e-6 << "\t" << sqrt(E*E-M*M) << "\t" << E << endl;
 	}
 
     plik.close();
