@@ -2,6 +2,8 @@
 #define OPCJERYS_H
 
 #include <QDialog>
+#include <fstream>
+#include "qcustomplot.h"
 
 namespace Ui {
 class opcjerys;
@@ -17,6 +19,8 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+
+    void on_BTNdraw_clicked();
 
 private:
     Ui::opcjerys *ui;

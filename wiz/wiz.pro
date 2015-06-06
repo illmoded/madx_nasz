@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = wiz
 TEMPLATE = app
 CONFIG += c++11
+QT += printsupport
 
 
 SOURCES += main.cpp\
@@ -20,7 +21,8 @@ SOURCES += main.cpp\
     generate.cpp \
     magnesy.cpp \
     global.cpp \
-    liczenie.cpp
+    liczenie.cpp \
+    qcustomplot.cpp
 
 HEADERS  += \
     wczytaj.h \
@@ -29,7 +31,8 @@ HEADERS  += \
     generate.h \
     magnesy.h \
     global.h \
-    liczenie.h
+    liczenie.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui \
     wczytaj.ui \

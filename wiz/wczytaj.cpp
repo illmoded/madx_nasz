@@ -82,7 +82,7 @@ void wczytaj::on_pushButton_3_clicked() // zapis
         dl=ui->tableWidget->item(i,1)->text().toDouble();
         in=ui->tableWidget->item(i,2)->text().toDouble();
         m=ui->tableWidget->item(i,3)->text().toUtf8().constData();
-        if((m=="D" || m=="KX" || m=="KY") && (dl!=0 || in!=0)){
+        if((m=="D" || m=="KX" || m=="KY") && dl!=0 && in!=0){
             magnes_temp=wczytajjeden(pol, dl, in, m);
             magnes_load=vappend(magnes_load,magnes_temp);
             magnes_temp.clear();
