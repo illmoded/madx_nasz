@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>512</width>
-    <height>417</height>
+    <width>560</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Rysowanie</string>
   </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>420</x>
-     <y>390</y>
-     <width>80</width>
-     <height>23</height>
+     <x>470</x>
+     <y>380</y>
+     <width>85</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
@@ -29,10 +29,10 @@
   <widget class="QPushButton" name="BTNdraw">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>470</x>
      <y>10</y>
      <width>85</width>
-     <height>31</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
@@ -44,8 +44,8 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>401</width>
-     <height>401</height>
+     <width>450</width>
+     <height>400</height>
     </rect>
    </property>
   </widget>

@@ -2,13 +2,28 @@
 <ui version="4.0">
  <class>wczytaj</class>
  <widget class="QDialog" name="wczytaj">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
-    <height>343</height>
+    <width>560</width>
+    <height>340</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>560</width>
+    <height>340</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>560</width>
+    <height>340</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -16,10 +31,10 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>20</y>
-     <width>80</width>
-     <height>23</height>
+     <x>470</x>
+     <y>10</y>
+     <width>85</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="mouseTracking">
@@ -44,10 +59,10 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>50</y>
-     <width>80</width>
-     <height>23</height>
+     <x>470</x>
+     <y>40</y>
+     <width>85</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
@@ -57,10 +72,10 @@
   <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>280</y>
-     <width>80</width>
-     <height>23</height>
+     <x>470</x>
+     <y>270</y>
+     <width>85</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
@@ -70,10 +85,10 @@
   <widget class="QPushButton" name="pushButton_4">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>250</y>
-     <width>80</width>
-     <height>23</height>
+     <x>470</x>
+     <y>240</y>
+     <width>85</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
@@ -83,10 +98,10 @@
   <widget class="QPushButton" name="pushButton_5">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>310</y>
-     <width>80</width>
-     <height>23</height>
+     <x>470</x>
+     <y>300</y>
+     <width>85</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
@@ -96,10 +111,10 @@
   <widget class="QPushButton" name="BTNshow">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>80</y>
-     <width>80</width>
-     <height>23</height>
+     <x>470</x>
+     <y>70</y>
+     <width>85</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
@@ -111,7 +126,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>451</width>
+     <width>450</width>
      <height>321</height>
     </rect>
    </property>
@@ -139,10 +154,10 @@
   <widget class="QPushButton" name="BTNrevert">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>220</y>
-     <width>80</width>
-     <height>23</height>
+     <x>470</x>
+     <y>210</y>
+     <width>85</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
