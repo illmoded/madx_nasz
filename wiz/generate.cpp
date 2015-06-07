@@ -3,7 +3,7 @@
 using namespace std;
 const double E0=7000;
 const double pmax=3.;
-const double ksimax=.2;
+const double ksimax=0.5;
 const double fimax=2*M_PI;
 const double M=0.9383;
 double pmin=0., ksimin=0., fimin=0.;

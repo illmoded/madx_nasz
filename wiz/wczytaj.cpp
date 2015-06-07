@@ -44,6 +44,7 @@ void wczytaj::on_pushButton_clicked() // wczytanie z pliku
     plik.close();
 
     wczytaj::on_BTNshow_clicked();
+    ui->statusbar->setText("Wczytano magnesy z pliku.");
 }
 
 void wczytaj::on_pushButton_2_clicked() //dodanie pojedynczego
@@ -63,6 +64,8 @@ void wczytaj::on_pushButton_2_clicked() //dodanie pojedynczego
     ui->tableWidget->setItem(i,2,item3);
     QTableWidgetItem *item4 = new QTableWidgetItem(QString::fromStdString("M"));
     ui->tableWidget->setItem(i,3,item4);
+
+    ui->statusbar->setText("Dodano magnes.");
 }
 
 void wczytaj::on_pushButton_4_clicked() // czyszczenie wszystkich
@@ -70,6 +73,7 @@ void wczytaj::on_pushButton_4_clicked() // czyszczenie wszystkich
     magnes_vec.clear();
     magnes_load.clear();
     wczytaj::on_BTNshow_clicked();
+    ui->statusbar->setText("Wyczyszczono wszystkie zapisane magnesy.");
 }
 
 void wczytaj::on_pushButton_3_clicked() // zapis
@@ -95,6 +99,7 @@ void wczytaj::on_pushButton_3_clicked() // zapis
 
 void wczytaj::on_BTNshow_clicked() // wypisz magnesy zapisane
 {
+    ui->statusbar->setText("Odświeżam...");
     while (ui->tableWidget->rowCount() > 0)
     {
         ui->tableWidget->removeRow(0);
@@ -124,4 +129,5 @@ void wczytaj::on_BTNrevert_clicked()
     magnes_load.clear();
     magnes_load=magnes_vec;
     wczytaj::on_BTNshow_clicked();
+    ui->statusbar->setText("Przywrócono zapisane magnesy.");
 }

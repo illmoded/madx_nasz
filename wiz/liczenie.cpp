@@ -4,6 +4,7 @@
 #include "generate.h"
 #include <thread>
 
+
 const double l = 204.0;
 const double r = 0.002;
 
@@ -27,8 +28,10 @@ void liczenie::on_BTNclose_clicked()
     this->close();
 }
 
-void liczenie::on_BTNcompute_clicked()
+void liczenie::on_BTNcompute_clicked() //licz
 {
+    ui->statusbar->setText("Liczę...");
+
     int rdzenie;
     rdzenie=(int)std::thread::hardware_concurrency();
     if (rdzenie==0) //czyli że nie wykrywa
@@ -63,13 +66,13 @@ void liczenie::on_BTNcompute_clicked()
     {
         thr[i].join();
     }
-
-    QMessageBox msgBox;
-    msgBox.setText("Gotowe");
-    msgBox.setIcon(QMessageBox::Information);
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    msgBox.exec();
+    ui->statusbar->setText("Gotowe!");
+//    QMessageBox msgBox;
+//    msgBox.setText("Gotowe");
+//    msgBox.setIcon(QMessageBox::Information);
+//    msgBox.setStandardButtons(QMessageBox::Ok);
+//    msgBox.setDefaultButton(QMessageBox::Ok);
+//    msgBox.exec();
 }
 
 void liczenie::pokaz_magnesy()
@@ -98,14 +101,16 @@ void liczenie::pokaz_magnesy()
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
-void liczenie::on_BTNgenerate_clicked()
+void liczenie::on_BTNgenerate_clicked() //generowanie
 {
+    ui->statusbar->setText("Generuję cząstki...");
     int ile = ui->LEparnum->text().toInt();
     if(ile==0) ile = 10000;
     gen(ile);
+    ui->statusbar->setText("Wygenerowano cząstki.");
 }
 
-void liczenie::on_BTNload_clicked()
+void liczenie::on_BTNload_clicked() //wczytanie z pliku
 {
     QString filename = QFileDialog::getOpenFileName(this,tr("Otwórz"), "",tr("Pliki cząstek (*.txt)"));
     QFile file(filename);
@@ -114,4 +119,5 @@ void liczenie::on_BTNload_clicked()
     ifstream plik(filename.toUtf8().constData(),ios::in);
     proton_vec = wczytajprotony(plik);
     plik.close();
+    ui->statusbar->setText("Wczytano z pliku.");
 }

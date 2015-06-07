@@ -13,5 +13,5 @@ ID,Kto,Opis,Historia,Uwagi,Szacowany czas,Realny Czas,Priorytet,Stan
 5a,sys,Wiz,"Program wyświetla tunel, w którym rozpędzane są cząstki.",,3h,,,
 5b,sys,Wiz,Wyświetla też magnesy rozłożone wzdłuż tunelu.,,3h,,,
 5c,sys,Wiz,Wyświetla trajektorię (w postaci linii) lub ewolucję układu w czasie.,,5h,,,
-7,sys,Interpreter,"Program wyświetla wykresy, które pomagają w interpretacji uzyskanych wyników symulacji fizycznej - wykres akceptancji, wykres alignment, itd. (z wykorzystaniem bibliotek ROOT, lub innych)",,6h,,,
+7,sys,Interpreter,"Program wyświetla wykresy, które pomagają w interpretacji uzyskanych wyników symulacji fizycznej - wykres akceptancji, wykres alignment, itd. (z wykorzystaniem bibliotek ROOT, lub innych)",,6h,,,proste wykresy
 8,user,Zapis,User może zapisać uzyskany wynik w formie pliku tekstowego lub eps/png,,2h,,,
