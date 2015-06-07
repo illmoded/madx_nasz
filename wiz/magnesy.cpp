@@ -63,8 +63,8 @@ using namespace std;
 		std::vector<double> vec;
 		vec.clear();
 		double I = GetIndukcja();
-        vec.push_back(I*y);
-		vec.push_back(I*x);
+        vec.push_back(-I*y);
+        vec.push_back(-I*x);
 		return vec;
 	}
 
@@ -228,10 +228,10 @@ void oblicz(std::vector<magnes_ptr> magnesy, std::vector<proton> protony, double
                     dt=0.05;
 					double Bx=magnesy[j]->pole(protony[i].x, protony[i].y)[0];
 					double By=magnesy[j]->pole(protony[i].x, protony[i].y)[1];
-                    protony[i].px+=dt/E*protony[i].pz*By;
+                    protony[i].px+=-dt/E*protony[i].pz*By;
                     protony[i].py+=dt/E*protony[i].pz*Bx;
                     protony[i].pz+=dt/E*(protony[i].px*By-protony[i].py*Bx);
-					protony[i].x+=dt/E*protony[i].px;
+                    protony[i].x+=-dt/E*protony[i].px;
 					protony[i].y+=dt/E*protony[i].py;
 					protony[i].z+=dt/E*protony[i].pz;
 					E = sqrt(protony[i].px*protony[i].px+protony[i].py*protony[i].py+protony[i].pz*protony[i].pz+Mp*Mp);
