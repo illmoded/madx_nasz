@@ -43,7 +43,7 @@ using namespace std;
 		return indukcja;
 	}
 
-	std::vector<double> dipol::pole(double x, double y)
+    std::vector<double> dipolU::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		vec.clear();
@@ -53,18 +53,33 @@ using namespace std;
 		return vec;
 	}
 
-    std::string dipol::Kto()
+    std::string dipolU::Kto()
 	{
-        return "D";
+        return "DU";
 	}
+
+    std::vector<double> dipolD::pole(double x, double y)
+    {
+        std::vector<double> vec;
+        vec.clear();
+        double I = GetIndukcja();
+        vec.push_back(-I);
+        vec.push_back(0);
+        return vec;
+    }
+
+    std::string dipolD::Kto()
+    {
+        return "DD";
+    }
 
     std::vector<double> kwadrupolX::pole(double x, double y)
 	{
 		std::vector<double> vec;
 		vec.clear();
 		double I = GetIndukcja();
-        vec.push_back(-I*y);
-        vec.push_back(-I*x);
+        vec.push_back(I*y);
+        vec.push_back(I*x);
 		return vec;
 	}
 
@@ -78,8 +93,8 @@ using namespace std;
         std::vector<double> vec;
         vec.clear();
         double I = GetIndukcja();
-        vec.push_back(I*y);
-        vec.push_back(I*x);
+        vec.push_back(-I*y);
+        vec.push_back(-I*x);
         return vec;
     }
 
@@ -125,10 +140,15 @@ std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 
     while(plik >> a >> b >> c >> d)
     {
-        if (d=="D")
+        if (d=="DU")
         {
-            magnes_ptr D(new dipol);
-            lista.push_back(D);
+            magnes_ptr DU(new dipolU);
+            lista.push_back(DU);
+        }
+        else if (d=="DD")
+        {
+            magnes_ptr DD(new dipolD);
+            lista.push_back(DD);
         }
         else if (d=="KX")
         {
@@ -158,10 +178,18 @@ std::vector<magnes_ptr> wczytajmagnesy(std::ifstream &plik)
 std::vector<magnes_ptr> wczytajjeden(double l, double d, double i, std::string m)
 {
     std::vector<magnes_ptr> lista;
-    if (m=="D")
+    if (m=="DU")
     {
-        magnes_ptr D(new dipol);
-        lista.push_back(D);
+        magnes_ptr DU(new dipolU);
+        lista.push_back(DU);
+        lista[0]->SetPolozenie(l);
+        lista[0]->SetDlugosc(d);
+        lista[0]->SetIndukcja(i);
+    }
+    else if (m=="DD")
+    {
+        magnes_ptr DD(new dipolD);
+        lista.push_back(DD);
         lista[0]->SetPolozenie(l);
         lista[0]->SetDlugosc(d);
         lista[0]->SetIndukcja(i);

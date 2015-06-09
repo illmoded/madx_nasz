@@ -31,10 +31,17 @@ public:
 	double GetIndukcja();
 };
 
-class dipol:public magnes
+class dipolU:public magnes
 {
 public:
 	virtual std::vector<double> pole(double x, double y);
+    virtual std::string Kto();
+};
+
+class dipolD:public magnes
+{
+public:
+    virtual std::vector<double> pole(double x, double y);
     virtual std::string Kto();
 };
 
