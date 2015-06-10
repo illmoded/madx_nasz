@@ -16,6 +16,11 @@ liczenie::liczenie(QWidget *parent) :
 {
     ui->setupUi(this);
     liczenie::pokaz_magnesy();
+
+    ui->tableWidget->horizontalHeaderItem(0)->setToolTip("Położenie w zakresie od 0 do 204 [m]");
+    ui->tableWidget->horizontalHeaderItem(1)->setToolTip("Długość magnesu [m]");
+    ui->tableWidget->horizontalHeaderItem(2)->setToolTip("Indukcja pola [T]");
+    ui->tableWidget->horizontalHeaderItem(3)->setToolTip("Rodzaj magnesu [DU, DD, KX, KY]");
 }
 
 liczenie::~liczenie()

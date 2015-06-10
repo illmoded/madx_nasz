@@ -22,6 +22,16 @@ private slots:
 
     void on_BTNdraw_clicked();
 
+    void on_CBlogx_clicked();
+
+    void on_CBlogy_clicked();
+
+    void on_comboBox_activated(int index);
+
+    void on_comboBox_2_activated(int index);
+
+    void on_BTNsave_clicked();
+
 private:
     Ui::opcjerys *ui;
 };

@@ -72,3 +72,58 @@ void opcjerys::on_BTNdraw_clicked()
 
     ui->widget->replot();
 }
+
+void opcjerys::on_CBlogx_clicked()
+{
+    if(ui->CBlogx->isChecked()){
+        ui->widget->xAxis->setScaleType(QCPAxis::stLogarithmic);
+        ui->widget->xAxis->setScaleLogBase(10);
+        ui->widget->xAxis->setNumberFormat("eb");
+        ui->widget->xAxis->setNumberPrecision(0);
+    }
+    else{
+        ui->widget->xAxis->setScaleType(QCPAxis::stLinear);
+        ui->widget->xAxis->setNumberFormat("g");
+        ui->widget->xAxis->setNumberPrecision(4);
+    }
+    opcjerys::on_BTNdraw_clicked();
+}
+
+void opcjerys::on_CBlogy_clicked()
+{
+    if(ui->CBlogy->isChecked()){
+        ui->widget->yAxis->setScaleType(QCPAxis::stLogarithmic);
+        ui->widget->yAxis->setScaleLogBase(10);
+        ui->widget->yAxis->setNumberFormat("eb");
+        ui->widget->yAxis->setNumberPrecision(0);
+    }
+    else{
+        ui->widget->yAxis->setScaleType(QCPAxis::stLinear);
+        ui->widget->yAxis->setNumberFormat("g");
+        ui->widget->yAxis->setNumberPrecision(4);
+    }
+    opcjerys::on_BTNdraw_clicked();
+}
+
+void opcjerys::on_comboBox_activated(int index)
+{
+    opcjerys::on_BTNdraw_clicked();
+}
+
+void opcjerys::on_comboBox_2_activated(int index)
+{
+    opcjerys::on_BTNdraw_clicked();
+}
+
+void opcjerys::on_BTNsave_clicked()
+{
+    QString str = ui->comboBox->currentText() + ui->comboBox_2->currentText();
+    double w = 1024;
+    double h = 1024;
+    if(ui->RBpng->isChecked()){
+        ui->widget->savePng(str, w, h);
+    }
+    if(ui->RBpdf->isChecked()){
+        ui->widget->savePdf(str, w, h);
+    }
+}

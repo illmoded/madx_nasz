@@ -60,6 +60,7 @@
      <height>400</height>
     </rect>
    </property>
+   <zorder>groupBox</zorder>
   </widget>
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
@@ -113,7 +114,7 @@
    <property name="geometry">
     <rect>
      <x>470</x>
-     <y>90</y>
+     <y>130</y>
      <width>85</width>
      <height>30</height>
     </rect>
@@ -174,7 +175,7 @@
    <property name="geometry">
     <rect>
      <x>470</x>
-     <y>70</y>
+     <y>110</y>
      <width>57</width>
      <height>17</height>
     </rect>
@@ -182,6 +183,90 @@
    <property name="text">
     <string>Oś Y:</string>
    </property>
+  </widget>
+  <widget class="QCheckBox" name="CBlogx">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>60</y>
+     <width>90</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Log</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="CBlogy">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>160</y>
+     <width>90</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Log</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>250</y>
+     <width>91</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Zapis:</string>
+   </property>
+   <widget class="QRadioButton" name="RBpng">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>40</y>
+      <width>71</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>.PNG</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="RBpdf">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>71</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>.PDF</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="BTNsave">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>70</y>
+      <width>85</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Zapisz</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>

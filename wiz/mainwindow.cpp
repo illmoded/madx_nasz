@@ -11,10 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->pbwczytaj->setToolTip("pokazuje opcje wczytywania");
-    ui->pushButton->setToolTip("teraz czytasz opcje do przycisku opcje");
-    ui->pushButton_2->setToolTip("teraz czytasz opcje do przycisku licz");
-    ui->pushButton_3->setToolTip("teraz czytasz opcje do przycisku wyjsce");
 }
 
 MainWindow::~MainWindow()

@@ -7,18 +7,20 @@ std::vector<magnes_ptr> magnes_temp; //tymczasowa lista magnesów
 std::vector<magnes_ptr> magnes_load; // magnesy wczytane, nie zapisane
 // magnes_vec to magnesy zapiane, obiekt globalny, nie chciało mi się szukać jak inaczej przekazywać
 
+double l = 204.;
+
 wczytaj::wczytaj(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::wczytaj)
 {
     ui->setupUi(this);
-    ui->pushButton->setToolTip("teraz czytasz opcje do przycisku wczytaj");
-    ui->pushButton_2->setToolTip("teraz czytasz opcje do przycisku dodaj");
-    ui->pushButton_3->setToolTip("teraz czytasz opcje do przycisku zapisz");
-    ui->pushButton_4->setToolTip("teraz czytasz opcje do przycisku czysc");
-    ui->pushButton_5->setToolTip("teraz czytasz opcje do przycisku wyjscie");
     magnes_load=magnes_vec;
     wczytaj::on_BTNshow_clicked();
+
+    ui->tableWidget->horizontalHeaderItem(0)->setToolTip("Położenie w zakresie od 0 do 204 [m]");
+    ui->tableWidget->horizontalHeaderItem(1)->setToolTip("Długość magnesu [m]");
+    ui->tableWidget->horizontalHeaderItem(2)->setToolTip("Indukcja pola [T]");
+    ui->tableWidget->horizontalHeaderItem(3)->setToolTip("Rodzaj magnesu [DU, DD, KX, KY]");
 }
 
 wczytaj::~wczytaj()
@@ -86,7 +88,7 @@ void wczytaj::on_pushButton_3_clicked() // zapis
         dl=ui->tableWidget->item(i,1)->text().toDouble();
         in=ui->tableWidget->item(i,2)->text().toDouble();
         m=ui->tableWidget->item(i,3)->text().toUtf8().constData();
-        if((m=="DU" || m=="DD" || m=="KX" || m=="KY") && dl!=0 && in!=0){
+        if((m=="DU" || m=="DD" || m=="KX" || m=="KY") && dl!=0 && in!=0 && pol<l){
             magnes_temp=wczytajjeden(pol, dl, in, m);
             magnes_load=vappend(magnes_load,magnes_temp);
             magnes_temp.clear();
