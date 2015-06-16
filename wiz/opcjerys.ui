@@ -60,7 +60,6 @@
      <height>400</height>
     </rect>
    </property>
-   <zorder>groupBox</zorder>
   </widget>
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
@@ -109,6 +108,11 @@
      <string>E</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>pT</string>
+    </property>
+   </item>
   </widget>
   <widget class="QComboBox" name="comboBox_2">
    <property name="geometry">
@@ -155,6 +159,11 @@
    <item>
     <property name="text">
      <string>E</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>pT</string>
     </property>
    </item>
   </widget>
