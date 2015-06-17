@@ -72,12 +72,6 @@ void liczenie::on_BTNcompute_clicked() //licz
         thr[i].join();
     }
     ui->statusbar->setText("Gotowe!");
-//    QMessageBox msgBox;
-//    msgBox.setText("Gotowe");
-//    msgBox.setIcon(QMessageBox::Information);
-//    msgBox.setStandardButtons(QMessageBox::Ok);
-//    msgBox.setDefaultButton(QMessageBox::Ok);
-//    msgBox.exec();
 }
 
 void liczenie::pokaz_magnesy()
@@ -110,8 +104,13 @@ void liczenie::on_BTNgenerate_clicked() //generowanie
 {
     ui->statusbar->setText("Generuję cząstki...");
     int ile = ui->LEparnum->text().toInt();
-    if(ile==0) ile = 10000;
-    gen(ile);
+    double pmin = ui->SBpmin->value();
+    double pmax = ui->SBpmax->value();
+    double fimin = ui->SBfimin->value();
+    double fimax = ui->SBfimax->value();
+    double ksimin = ui->SBksimin->value();
+    double ksimax = ui->SBksimax->value();
+    gen(ile, pmin, pmax, fimin, fimax, ksimin, ksimax);
     ui->statusbar->setText("Wygenerowano cząstki.");
 }
 

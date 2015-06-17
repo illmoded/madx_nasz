@@ -8,6 +8,6 @@
 #include <iostream>
 #include <cstdlib>
 
-void gen(int ilosc);
+void gen(int ilosc, double pmin, double pmax, double fimin, double fimax, double ksimin, double ksimax);
 
 #endif

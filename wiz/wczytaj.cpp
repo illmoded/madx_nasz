@@ -36,8 +36,8 @@ void wczytaj::on_pushButton_5_clicked() // wyjście
 void wczytaj::on_pushButton_clicked() // wczytanie z pliku
 {
     QString filename = QFileDialog::getOpenFileName(this,tr("Otwórz"), "",tr("Pliki magnesów (*.mag)"));
-    QFile file(filename);
-    file.open(QIODevice::ReadWrite);
+//    QFile file(filename);
+//    file.open(QIODevice::ReadWrite);
 
     ifstream plik(filename.toUtf8().constData(),ios::in);
     magnes_temp = wczytajmagnesy(plik);
